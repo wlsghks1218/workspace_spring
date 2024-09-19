@@ -46,4 +46,11 @@
 		where
 		bno = #{bno}
 	</update>
+	 <update id="updateReplyCnt">
+     UPDATE TBL_BOARD
+     SET
+         replycnt = replycnt + #{amount}
+     WHERE
+         BNO = #{bno}
+ 	</update>
 </mapper>
