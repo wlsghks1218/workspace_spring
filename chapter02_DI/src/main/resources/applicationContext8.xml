@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	<bean id="cBean1" class="org.joonzis.DI_8.CollectionBean">
+		<property name="addressList">
+			<list>
+				<value>서울시</value>
+				<value>인천시</value>
+				<value>경기도</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="cBean2" class="org.joonzis.DI_8.CollectionBean">
+		<property name="addressSet">
+			<set>
+				<value>서울시</value>
+				<value>인천시</value>
+				<value>경기도</value>
+			</set>
+		</property>
+	</bean>
+	<bean id="cBean3" class="org.joonzis.DI_8.CollectionBean">
+		<property name="addressMap">
+			<map>
+				<entry>
+					<key><value>김씨</value></key>
+					<value>서울</value>
+				</entry>
+				<entry>
+					<key><value>이씨</value></key>
+					<value>경기도</value>
+				</entry>
+			</map>
+		</property>
+
+	</bean>
+
+</beans>
