@@ -8,9 +8,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="uploadFormAction" method="post" enctype="multipart/form-data">
+	<div class="uploadDiv">
 		<input type="file" name="uploadFile" multiple="multiple">
-		<button>submit</button>
-	</form>
+	</div>
+	<button id="uploadBtn">Upload</button>
 </body>
+<script type="text/javascript" src="/resources/js/upload.js"></script>
 </html>
