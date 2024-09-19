@@ -49,6 +49,7 @@ public class ReplyServiceImpl implements ReplyService {
 		boardMapper.updateReplyCnt(rvo.getBno(), -1);
 		return mapper.replyDelete(rno);
 	}
+	
 
 	@Override
 	public ReplyVO replyRead(int rno) {
