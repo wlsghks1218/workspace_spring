@@ -2,11 +2,25 @@ package org.joonzis.controller;
 
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
+import org.joonzis.domain.AttachFileDTO;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j;
@@ -49,11 +63,24 @@ public class UploadController {
 		return "uploadAsync";
 	}
 	
-	@PostMapping("uploadAsyncAction")
-	public void uploadAsyncPost(MultipartFile[] uploadFile, Model model) {
+	@ResponseBody
+	@PostMapping(value = "/uploadAsyncAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<AttachFileDTO>> uploadAsyncPost(MultipartFile[] uploadFile, Model model) {
+		
+		List<AttachFileDTO> list = new ArrayList<AttachFileDTO>();
+		
 		log.info("upload Async post...");
 		
 		String uploadFolder = "C:\\upload";
+		
+		
+		// make folder ---------
+		File uploadPath = new File(uploadFolder, getFolder());
+		log.info("uploadPath : " + uploadPath);
+		
+		if(!uploadPath.exists()) {
+			uploadPath.mkdirs();
+		}
 
 		for(MultipartFile multipartFile : uploadFile) {
 			log.info("-------------");
@@ -65,12 +92,57 @@ public class UploadController {
 			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
 			log.info("only file name : " + uploadFileName);
 			
+			UUID uuid = UUID.randomUUID();
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			
 			try {
-				File saveFile = new File(uploadFolder, uploadFileName);
+				File saveFile = new File(uploadPath, uploadFileName);
 				multipartFile.transferTo(saveFile);
+				
+				AttachFileDTO attachDto = new AttachFileDTO();
+				attachDto.setUuid(uuid.toString());
+				attachDto.setUploadPath(getFolder());
+				attachDto.setFileName(multipartFile.getOriginalFilename());
+				
+				list.add(attachDto);
+				
+				
 			}catch (Exception e) {
 				log.error(e.getMessage());
 			}
 		}
+		return new ResponseEntity<List<AttachFileDTO>>(list, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<Resource> downloadFile(String fileName){
+		log.info("download file .... " + fileName);
+		Resource resource = new FileSystemResource("C:\\upload\\" + fileName);
+		
+		log.info("resource : " + resource);
+		
+		String resourceName = resource.getFilename();
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			headers.add("Content-Disposition", "attach; fileName=" + new String(resourceName.getBytes("utf-8"),"ISO-8859-1"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+	
+	
+	
+	// 오늘 날짜 경로를 문자열로 생성
+	private String getFolder() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String str = sdf.format(date);
+		return str.replace("-", File.separator);
+		// "-"를 file.separator로 변환하겠다.
+		// 2024-09-19 면 2024폴더 안에 09월 폴더 안에 19일 폴더 안으로 됨
 	}
 }
