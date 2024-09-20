@@ -60,6 +60,7 @@ public class BoardServiceImpl implements BoardService {
 		if(vo.getAttachList() != null && vo.getAttachList().size() > 0) {
 			vo.getAttachList().forEach(attach -> {
 				attach.setBno(vo.getBno());
+				attachMapper.delete(attach.getUuid());
 				attachMapper.insert(attach);
 			});
 		}
