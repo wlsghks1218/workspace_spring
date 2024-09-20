@@ -5,6 +5,11 @@ linkEle.rel = 'stylesheet';
 linkEle.href = CSS_FILE_PATH;
 document.head.appendChild(linkEle);
 
+//확장자 정규식
+const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+// 파일크기 제한 - 5MB
+const MAX_SIZE = 5242880;
+
 // 0번 form data를 변수 f로 선언
 const f = document.forms[0];
 
@@ -99,6 +104,10 @@ function modify(){
 	document.querySelector('#updateBtn').textContent = "수정완료";
     document.querySelector('#cancelBtn').style.display = 'inline';
     document.querySelector('#deleteBtn').style.display = 'inline';
+    document.querySelector('input[name=uploadFile]').style.display = 'inline';
+    document.querySelectorAll('.uploadResult ul li span').forEach(span => {
+    	span.style.display = 'inline';
+    })
 }
 
 // 게시글 수정 -> 취소 함수
@@ -112,16 +121,32 @@ function cancel(){
 	document.querySelector('#modifyBtn').textContent = "게시글 수정";
     document.querySelector('#cancelBtn').style.display = 'none';
     document.querySelector('#deleteBtn').style.display = 'none';
+    document.querySelector('input[name=uploadFile]').style.display = 'none';
+    document.querySelectorAll('.uploadResult ul li span').forEach(span => {
+    	span.style.display = 'none';
+    })
 }
 
 // 게시글 수정 -> 수정 함수
 function updateBoard(){
+	let str ='';
 	if(f.title.value ==""){
-		alert("제목 입려하세여");
+		alert("제목 입력하세여");
 	}
 	if(f.content.value ==""){
 		alert("내용 입력하세여");
 	}
+	document.querySelectorAll('.uploadResult ul li').forEach( (li, index) => {
+		let path = li.getAttribute('path');
+		let uuid = li.getAttribute('uuid');
+		let fileName = li.getAttribute('fileName');
+		
+		str += `<input type="hidden" name="attachList[${index}].uploadPath" value="${path}"/>`;
+		str += `<input type="hidden" name="attachList[${index}].uuid" value="${uuid}"/>`;
+		str += `<input type="hidden" name="attachList[${index}].fileName" value="${fileName}"/>`;
+	})
+//	f.innerHTML += str; // 입력된 form 데이터가 다 날아감
+	f.insertAdjacentHTML('beforeend', str);
 	f.action = "/board/modify";
 	f.submit();
 }
@@ -277,6 +302,117 @@ function removeReply(){
 	}
 }
 
+// --------- 첨부 파일 스크립트
+let uploadResult = document.querySelector(".uploadResult ul")
+fetch('/board/getAttachList/' + f.bno.value)
+	.then(response => response.json())
+	.then(result => {
+		let str = '';
+		console.log(result)
+		result.forEach( file => {
+			let fileCallPath = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName); // URL로 경로를 실어 보낼 때 알아서 변경해주는 것
+			
+			str += `<li path="${file.uploadPath}" uuid="${file.uuid}" fileName="${file.fileName}">`;
+			str += "<a href='/download?fileName="+ fileCallPath +"'>";
+			str += file.fileName;
+			str += "</a>";
+			str += `<span data-file=${fileCallPath} style="display: none;"> X </span>`;
+			str += "</li>";
+		})
+		uploadResult.innerHTML += str;
+	})
+	.catch(err => console.log(err))
+
+uploadResult.addEventListener('click', (e)=>{
+	console.log(e.target);
+	switch(e.target.tagName){
+	case 'SPAN':
+		let targetFile = e.target.getAttribute('data-file');
+		let uuid = e.target.closest('li').getAttribute('uuid');
+		console.log(targetFile);
+		console.log(uuid)
+		
+		fetch('/deleteFile', 
+				{
+					method : 'post',
+					body : JSON.stringify({ fileName: targetFile, uuid: uuid }),
+					headers : {
+						'Content-type' : 'application/json'
+					}
+				}
+			)
+			.then(response => response.text())
+			.then(result => {
+				console.log(result);
+				if(result == "deleted"){
+					let liEle = e.target.closest('li');
+					alert("첨부파일 삭제했습니다.")
+					uploadResult.removeChild(liEle);
+				}
+			})
+			.catch(err => console.log(err));
+		break
+	}
+})
+function checkExtension(fileName, fileSize){
+	if(fileSize >= MAX_SIZE){
+		alert("파일 사이즈 초과");
+		return false;
+	}
+	if(regex.test(fileName)){
+		alert("해당 종류의 파일은 업로드할 수 없습니다.")
+		return false;
+	}
+	return true;
+}
+
+// input type이 file에 변경점이 있을 때마다 이벤트 추가
+document.querySelector('input[type="file"]').addEventListener('change', ()=> {
+	console.log("바꼈어요")
+	const formData = new FormData();
+	const inputFile = document.querySelector('input[type="file"]');
+	const files = inputFile.files;
+	for(let i=0; i < files.length; i++){
+		
+		if(!checkExtension(files[i].name, files[i].size)){
+			return false; // return false의 경우 for문 종료 후 아래 코드 실행하지 않음
+		}
+		formData.append("uploadFile", files[i]);
+	}
+	
+	fetch('/uploadAsyncAction', 
+			{
+				method : 'post',
+				body : formData
+			}
+		)
+		.then(response => response.json())
+		.then(json => {
+			console.log(json);
+			showUploadFile(json);
+//			uploadDiv.replaceChild(cloneObj.cloneNode(true), uploadDiv.firstElementChild);
+			// 파일 입력 초기화
+			inputFile.value = ''; // 선택된 파일 초기화
+		})
+		.catch(err => console.log(err));
+})
+function showUploadFile(uploadResultArr){
+	if(!uploadResultArr || uploadResultArr.length == 0) return;
+	
+	
+	let str = '';
+	uploadResultArr.forEach( file => {
+		let fileCallPath = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName); // URL로 경로를 실어 보낼 때 알아서 변경해주는 것
+		
+		str += `<li path="${file.uploadPath}" uuid="${file.uuid}" fileName="${file.fileName}">`;
+		str += "<a href='/download?fileName="+ fileCallPath +"'>";
+		str += file.fileName;
+		str += "</a>";
+		str += `<span data-file=${fileCallPath}> X </span>`;
+		str += "</li>";
+	});
+	uploadResult.innerHTML += str;
+}
 
 //UTC 시간을 KST로 변환하는 함수
 function displayTime(unixTimeStamp) {

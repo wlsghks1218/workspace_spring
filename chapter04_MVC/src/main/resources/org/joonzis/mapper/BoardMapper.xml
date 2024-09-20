@@ -24,9 +24,12 @@
 		from TBL_BOARD
 	</select>
 	<insert id="insert" parameterType="org.joonzis.domain.BoardVO">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="int">
+			select seq_board.nextval from dual
+		</selectKey>
 		INSERT INTO TBL_BOARD
 		values
-		(SEQ_BOARD.NEXTVAL, #{title}, #{content}, #{writer}, SYSDATE, SYSDATE)
+		(#{bno}, #{title}, #{content}, #{writer}, SYSDATE, SYSDATE, 0)
 	</insert>
 	<select id="read" parameterType="int"
 		resultType="org.joonzis.domain.BoardVO">
@@ -39,18 +42,22 @@
 	<update id="update" parameterType="org.joonzis.domain.BoardVO">
 		update tbl_board
 		set
-		title = #{title},
+		title =
+		#{title},
 		content = #{content},
 		writer = #{writer},
 		updatedate = sysdate
 		where
 		bno = #{bno}
 	</update>
-	 <update id="updateReplyCnt">
-     UPDATE TBL_BOARD
-     SET
-         replycnt = replycnt + #{amount}
-     WHERE
-         BNO = #{bno}
- 	</update>
+	<update id="updateReplyCnt">
+		UPDATE TBL_BOARD
+		SET
+		replycnt = replycnt + #{amount}
+		WHERE
+		BNO = #{bno}
+	</update>
+<!-- 	<select id="maxBno" resultType="int">
+		select max(bno) from tbl_board
+	</select> -->
 </mapper>

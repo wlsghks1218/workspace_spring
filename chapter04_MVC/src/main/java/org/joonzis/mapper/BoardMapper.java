@@ -20,4 +20,6 @@ public interface BoardMapper {
 	public int update(BoardVO bVo);
 	// 댓글 수 수정
 	public int updateReplyCnt(@Param("bno") int bno, @Param("amount") int amount);
+	
+//	public int maxBno();
 }

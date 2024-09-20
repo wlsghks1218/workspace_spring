@@ -19,6 +19,18 @@ function register(){
 		alert("내용을 입력하세요.")
 		return;
 	}
+	let str ='';
+	document.querySelectorAll('.uploadResult ul li').forEach( (li, index) => {
+		let path = li.getAttribute('path');
+		let uuid = li.getAttribute('uuid');
+		let fileName = li.getAttribute('fileName');
+		
+		str += `<input type="hidden" name="attachList[${index}].uploadPath" value="${path}"/>`;
+		str += `<input type="hidden" name="attachList[${index}].uuid" value="${uuid}"/>`;
+		str += `<input type="hidden" name="attachList[${index}].fileName" value="${fileName}"/>`;
+	})
+//	f.innerHTML += str; // 입력된 form 데이터가 다 날아감
+	f.insertAdjacentHTML('beforeend', str);
 	f.action = '/board/register';
 	f.submit();
 }

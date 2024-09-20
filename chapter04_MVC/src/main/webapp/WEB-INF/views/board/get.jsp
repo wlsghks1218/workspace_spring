@@ -39,6 +39,21 @@
 				</tbody>
 			</table>
 		</form>
+			<div class="file-container">
+				<div class="file-header">
+					<div class="file-title">
+					<a>파일 첨부</a>
+					</div>
+				</div>
+			<div class="file-body">
+				<div class="uploadDiv">
+				<input type="file" name="uploadFile" multiple="multiple" style="display: none;">
+				</div>
+			<div class="uploadResult">
+				<ul></ul>
+			</div>
+		</div>
+	</div>
 		<div class="panel-body-btns">
 			<button type="button" class="btn btn-sec" id="modifyBtn">게시글 수정</button>
 			<button type="button" class="btn btn-fir" id="indexBtn">목록으로 이동</button>

@@ -2,11 +2,14 @@ package org.joonzis.service;
 
 import java.util.List;
 
+import org.joonzis.domain.BoardAttachVO;
 import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
+import org.joonzis.mapper.BoardAttachMapper;
 import org.joonzis.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.log4j.Log4j;
 
@@ -16,6 +19,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private BoardMapper mapper;
+	
+	@Autowired
+	private BoardAttachMapper attachMapper;
 	
 	@Override
 	public List<BoardVO> getListWithPaging(Criteria cri) {
@@ -29,9 +35,21 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional
 	public int register(BoardVO vo) {
 		log.info("------ register..." + vo);
-		return mapper.insert(vo);
+		
+		// 1. tbl_board 게시글 등록
+		int result = mapper.insert(vo);
+		
+		// 2. tbl_attach 등록
+		if(vo.getAttachList() != null && vo.getAttachList().size() > 0) {
+			vo.getAttachList().forEach(attach -> {
+				attach.setBno(vo.getBno());
+				attachMapper.insert(attach);
+			});
+		}
+		return result;
 	}
 
 	@Override
@@ -52,5 +70,15 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.read(bno);
 	}
 
+	@Override
+	public List<BoardAttachVO> getAttachList(int bno) {
+		log.info("getAttachList..." + bno);
+		return attachMapper.findByBno(bno);
+	}
 	
+	@Override
+	public void deleteAttach(String uuid) {
+		log.info("attachFile delete..." + uuid);
+		attachMapper.delete(uuid);
+	}
 }

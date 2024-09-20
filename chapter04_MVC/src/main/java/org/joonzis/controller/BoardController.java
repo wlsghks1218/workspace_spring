@@ -1,16 +1,28 @@
 package org.joonzis.controller;
 
+import java.io.File;
+import java.net.URLDecoder;
+import java.util.List;
+import java.util.Map;
+
+import org.joonzis.domain.BoardAttachVO;
 import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.domain.PageDTO;
 import org.joonzis.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.log4j.Log4j;
@@ -67,6 +79,9 @@ public class BoardController {
 	public String register(BoardVO vo, RedirectAttributes rttr) {
 		log.info("----- register..." + vo);
 		service.register(vo);
+		if(vo.getAttachList() != null) {
+			vo.getAttachList().forEach(attach -> log.info(attach));
+		}
 		rttr.addFlashAttribute("result", "success");
 		return "redirect:/board/list";
 		// redirect: 로 리다이렉트 태울 수 있음
@@ -84,6 +99,14 @@ public class BoardController {
 		log.info("----- get..." + bno);
 		model.addAttribute("vo", service.get(bno));
 		return "/board/get";
+	}
+	
+	// 첨부파일 리스트 조회
+	@ResponseBody
+	@GetMapping(value = "/getAttachList/{bno}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<BoardAttachVO>> getAttachList(@PathVariable("bno") int bno){
+		log.info("getAttachList... " + bno);
+		return new ResponseEntity<List<BoardAttachVO>>(service.getAttachList(bno),HttpStatus.OK);
 	}
 //	@GetMapping({"/get", "/modify"})
 //	아래 get방식 modify를 배열 처리 후 method 방식을 void로 변경 (동일한 코드의 메소드는 배열 처리해서 합칠 수 있음)
@@ -104,11 +127,20 @@ public class BoardController {
 	// 게시글 수정
 	@PostMapping("/modify")
 	public String modify(BoardVO vo, Model model) {
-		log.info("----- modify..." + vo);
-		service.modify(vo);
-		model.addAttribute("vo", service.get(vo.getBno()));
-		return "/board/get";
-//		return "redirect:/board/get?bno="+vo.getBno();
+	    log.info("----- modify..." + vo);
+	    
+	    // 게시글 수정
+	    service.modify(vo);
+	    
+	    // 첨부파일 목록 로깅
+	    if (vo.getAttachList() != null) {
+	        vo.getAttachList().forEach(attach -> log.info("니가 가진 목록" + attach));
+	    }
+	    
+	    // 게시글 조회 및 모델에 추가
+	    model.addAttribute("vo", service.get(vo.getBno()));
+	    
+	    return "/board/get"; // 또는 return "redirect:/board/get?bno=" + vo.getBno();
 	}
 	
 	// 게시글 삭제
@@ -118,4 +150,5 @@ public class BoardController {
 		service.remove(bno);
 		return "redirect:/board/list";
 	}
+	
 }
