@@ -76,6 +76,7 @@ document.querySelectorAll("button").forEach(btn => {
 			
 			// 게시글 수정 -> 수정 버튼	
 		case "updateBtn":
+			e.preventDefault();
 			updateBoard();
 			break;
 			
@@ -136,6 +137,29 @@ function updateBoard(){
 	if(f.content.value ==""){
 		alert("내용 입력하세여");
 	}
+
+	// delete 부분
+	for(let i = 0; i<deleteAttach.length; i++){
+	fetch('/deleteFile', 
+			{
+				method : 'post',
+				body : JSON.stringify(deleteAttach[i]),
+				headers : {
+					'Content-type' : 'application/json'
+				}
+			}
+		)
+		.then(response => response.text())
+		.then(result => {
+			console.log(result);
+			if(result == "deleted"){
+				alert("첨부파일 삭제했습니다.")
+			}
+		})
+		.catch(err => console.log(err));
+	}
+	
+	// modify에서 첨부파일 추가하는 부분
 	document.querySelectorAll('.uploadResult ul li').forEach( (li, index) => {
 		let path = li.getAttribute('path');
 		let uuid = li.getAttribute('uuid');
@@ -147,7 +171,9 @@ function updateBoard(){
 	})
 //	f.innerHTML += str; // 입력된 form 데이터가 다 날아감
 	f.insertAdjacentHTML('beforeend', str);
+	f.method = "POST";
 	f.action = "/board/modify";
+	console.log(f);
 	f.submit();
 }
 
@@ -323,6 +349,7 @@ fetch('/board/getAttachList/' + f.bno.value)
 	})
 	.catch(err => console.log(err))
 
+let deleteAttach = [];
 uploadResult.addEventListener('click', (e)=>{
 	console.log(e.target);
 	switch(e.target.tagName){
@@ -331,26 +358,10 @@ uploadResult.addEventListener('click', (e)=>{
 		let uuid = e.target.closest('li').getAttribute('uuid');
 		console.log(targetFile);
 		console.log(uuid)
+		deleteAttach.push({ fileName: targetFile, uuid: uuid })
+		let liEle = e.target.closest('li');
+		uploadResult.removeChild(liEle);
 		
-		fetch('/deleteFile', 
-				{
-					method : 'post',
-					body : JSON.stringify({ fileName: targetFile, uuid: uuid }),
-					headers : {
-						'Content-type' : 'application/json'
-					}
-				}
-			)
-			.then(response => response.text())
-			.then(result => {
-				console.log(result);
-				if(result == "deleted"){
-					let liEle = e.target.closest('li');
-					alert("첨부파일 삭제했습니다.")
-					uploadResult.removeChild(liEle);
-				}
-			})
-			.catch(err => console.log(err));
 		break
 	}
 })
@@ -396,6 +407,7 @@ document.querySelector('input[type="file"]').addEventListener('change', ()=> {
 		})
 		.catch(err => console.log(err));
 })
+
 function showUploadFile(uploadResultArr){
 	if(!uploadResultArr || uploadResultArr.length == 0) return;
 	

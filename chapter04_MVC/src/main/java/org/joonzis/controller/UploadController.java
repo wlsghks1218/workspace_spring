@@ -139,7 +139,12 @@ public class UploadController {
 			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "utf-8"));
 			file.delete();
 			service.deleteAttach(uuid);
+			log.info("-------");
+			log.info("-------");
 		} catch (Exception e) {
+			log.info("----catch---");
+			log.info("----catch---");
+			log.info("-------");
 			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}

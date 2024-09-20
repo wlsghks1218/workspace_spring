@@ -55,7 +55,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int modify(BoardVO vo) {
 		log.info("------ modify..." + vo);
-		return mapper.update(vo);
+		int result = mapper.update(vo);
+		
+		if(vo.getAttachList() != null && vo.getAttachList().size() > 0) {
+			vo.getAttachList().forEach(attach -> {
+				attach.setBno(vo.getBno());
+				attachMapper.insert(attach);
+			});
+		}
+		
+		return result;
 	}
 
 	@Override

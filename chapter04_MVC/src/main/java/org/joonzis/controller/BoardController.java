@@ -126,20 +126,20 @@ public class BoardController {
 	
 	// 게시글 수정
 	@PostMapping("/modify")
-	public String modify(BoardVO vo, Model model) {
-	    log.info("----- modify..." + vo);
-	    
-	    // 게시글 수정
-	    service.modify(vo);
-	    
-	    // 첨부파일 목록 로깅
-	    if (vo.getAttachList() != null) {
-	        vo.getAttachList().forEach(attach -> log.info("니가 가진 목록" + attach));
-	    }
-	    
-	    // 게시글 조회 및 모델에 추가
-	    model.addAttribute("vo", service.get(vo.getBno()));
-	    
+	public String modify(Model model) {
+//	    log.info("----- modify..." + vo);
+//	    
+//	    // 게시글 수정
+//	    service.modify(vo);
+//	    
+//	    // 첨부파일 목록 로깅
+//	    if (vo.getAttachList() != null) {
+//	        vo.getAttachList().forEach(attach -> log.info("니가 가진 목록" + attach));
+//	    }
+//	    
+//	    // 게시글 조회 및 모델에 추가
+//	    model.addAttribute("vo", service.get(vo.getBno()));
+	    System.out.println(model);
 	    return "/board/get"; // 또는 return "redirect:/board/get?bno=" + vo.getBno();
 	}
 	
