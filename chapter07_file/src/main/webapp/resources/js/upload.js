@@ -65,8 +65,38 @@ function showUploadFile(uploadResultArr){
 		str += "<li>";
 		str += "<a href='/download?fileName="+ fileCallPath +"'>";
 		str += file.fileName;
-		str += "</a>"
+		str += "</a>";
+		str += `<span data-file=${fileCallPath}> X </span>`;
 		str += "</li>";
 	});
 	uploadResult.innerHTML = str;
 }
+
+uploadResult.addEventListener('click', (e)=>{
+	console.log(e.target.tagName);
+	switch(e.target.tagName){
+	case 'SPAN':
+		let targetFile = e.target.getAttribute('data-file');
+		console.log(targetFile);
+		
+		fetch('/deleteFile', 
+				{
+					method : 'post',
+					body : targetFile,
+					headers : {
+						'Content-type' : 'text/plain'
+					}
+				}
+			)
+			.then(response => response.text())
+			.then(result => {
+				console.log(result);
+				if(result == "deleted"){
+					let liEle = e.target.closest('li');
+					uploadResult.removeChild(liEle);
+				}
+			})
+			.catch(err => console.log(err));
+		break
+	}
+})

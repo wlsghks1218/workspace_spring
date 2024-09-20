@@ -3,6 +3,7 @@ package org.joonzis.controller;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -132,6 +134,22 @@ public class UploadController {
 		}
 		
 		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public ResponseEntity<String> deleteFile(@RequestBody String fileName){
+		log.info("delete File : " + fileName);
+		
+		File file = null;
+		try {
+			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "utf-8"));
+			file.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 	
 	
