@@ -296,8 +296,6 @@ function removeReply() {
 
 // --------- 첨부 파일 스크립트 ---------
 let uploadResult = document.querySelector(".uploadResult ul");
-let existedFiles = []; // existedFile 배열 초기화
-
 function showAttachList() {
     fetch('/board/getAttachList/' + f.bno.value)
         .then(response => response.json())
@@ -308,7 +306,6 @@ function showAttachList() {
             console.log(result);
             result.forEach(file => {
                 let fileCallPath = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName);
-                existedFiles.push({ uuid: file.uuid, fileName: file.fileName });
                 uploadResultArr.push({ fileName: file.fileName, uploadPath: file.uploadPath, uuid: file.uuid }); // 기존 파일도 uploadResultArr에 추가
                 str += `<li path="${file.uploadPath}" uuid="${file.uuid}" fileName="${file.fileName}">`;
                 str += "<a href='/download?fileName=" + fileCallPath + "'>";
