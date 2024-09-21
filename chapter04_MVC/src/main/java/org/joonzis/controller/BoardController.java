@@ -80,7 +80,7 @@ public class BoardController {
 		log.info("----- register..." + vo);
 		service.register(vo);
 		if(vo.getAttachList() != null) {
-			vo.getAttachList().forEach(attach -> log.info(attach));
+			vo.getAttachList().forEach(attach -> log.info("첨부파일 목록" + attach));
 		}
 		rttr.addFlashAttribute("result", "success");
 		return "redirect:/board/list";

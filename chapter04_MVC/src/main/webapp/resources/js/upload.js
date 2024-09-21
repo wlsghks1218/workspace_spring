@@ -24,84 +24,90 @@ function checkExtension(fileName, fileSize){
 
 
 // input type이 file에 변경점이 있을 때마다 이벤트 추가
+let uploadResultArr = [];
+let formData = null;
 document.querySelector('input[type="file"]').addEventListener('change', ()=> {
 	console.log("바꼈어요")
-	const formData = new FormData();
+	formData = new FormData();
 	const inputFile = document.querySelector('input[type="file"]');
 	const files = inputFile.files;
+	let fileAdded = false;
+	
 	for(let i=0; i < files.length; i++){
+        if (isFileDuplicate(files[i].name)) {
+            alert(`이미 같은 이름의 파일(${files[i].name})이 첨부되었습니다.`);
+            continue; // 중복된 파일은 추가하지 않음
+        }
 		
 		if(!checkExtension(files[i].name, files[i].size)){
 			return false; // return false의 경우 for문 종료 후 아래 코드 실행하지 않음
 		}
 		formData.append("uploadFile", files[i]);
+		
+		uploadResultArr.push({
+			fileName: files[i].name,
+		});
+		fileAdded = true;
 	}
 	
-	fetch('/uploadAsyncAction', 
-			{
-				method : 'post',
-				body : formData
-			}
-		)
-		.then(response => response.json())
-		.then(json => {
-			console.log(json);
-			showUploadFile(json);
-//			uploadDiv.replaceChild(cloneObj.cloneNode(true), uploadDiv.firstElementChild);
-			// 파일 입력 초기화
-			inputFile.value = ''; // 선택된 파일 초기화
-		})
-		.catch(err => console.log(err));
+	if(fileAdded){
+	showUploadFile(uploadResultArr);
+	}
 })
+
 
 // 첨부한 파일 목록	
 let uploadResult = document.querySelector(".uploadResult ul")
-
 function showUploadFile(uploadResultArr){
 	if(!uploadResultArr || uploadResultArr.length == 0) return;
 	
-	
 	let str = '';
+	uploadResult.innerHTML = '';
+	
 	uploadResultArr.forEach( file => {
-		let fileCallPath = encodeURIComponent(file.uploadPath + "/" + file.uuid + "_" + file.fileName); // URL로 경로를 실어 보낼 때 알아서 변경해주는 것
-		
-		str += `<li path="${file.uploadPath}" uuid="${file.uuid}" fileName="${file.fileName}">`;
-//		str += "<a href='/download?fileName="+ fileCallPath +"'>";
-		str += "<a>";
-		str += file.fileName;
-		str += "</a>";
-		str += `<span data-file=${fileCallPath}> X </span>`;
+		str += `<li>`;
+		str += `<a>${file.fileName}</a>`;
+		str += `<span data-file="${file.fileName}"> X </span>`;
 		str += "</li>";
 	});
 	uploadResult.innerHTML += str;
 }
 
-uploadResult.addEventListener('click', (e)=>{
-	console.log(e.target);
-	switch(e.target.tagName){
-	case 'SPAN':
-		let targetFile = e.target.getAttribute('data-file');
-		console.log(targetFile);
-		
-		fetch('/deleteFile', 
-				{
-					method : 'post',
-					body : targetFile,
-					headers : {
-						'Content-type' : 'text/plain'
-					}
-				}
-			)
-			.then(response => response.text())
-			.then(result => {
-				console.log(result);
-				if(result == "deleted"){
-					let liEle = e.target.closest('li');
-					uploadResult.removeChild(liEle);
-				}
-			})
-			.catch(err => console.log(err));
-		break
-	}
-	
-})
+//파일 중복 여부 확인 함수
+function isFileDuplicate(fileName) {
+    return uploadResultArr.some(file => file.fileName === fileName);
+}
+
+uploadResult.addEventListener('click', (e) => {
+    console.log(e.target);
+    switch (e.target.tagName) {
+        case 'SPAN':
+            let targetFileName = e.target.getAttribute('data-file');
+
+            // 배열에서 해당 파일 이름의 객체를 제거
+            const index = uploadResultArr.findIndex(file => file.fileName === targetFileName);
+            if (index !== -1) {
+                uploadResultArr.splice(index, 1); // 해당 객체 제거
+            }
+
+            // formData에서도 해당 파일 제거
+            const inputFile = document.querySelector('input[type="file"]');
+            const files = inputFile.files;
+            const newFormData = new FormData(); // 새로운 FormData 생성
+
+            for (let [key, value] of formData.entries()) {
+                if (value.name !== targetFileName) {
+                    newFormData.append(key, value); // 기존 파일 중 제거되지 않은 파일만 추가
+                }
+            }
+            formData = newFormData; // formData를 업데이트
+
+            // li 요소 제거
+            let liEle = e.target.closest('li');
+            uploadResult.removeChild(liEle);
+
+            // 파일 목록 갱신
+            showUploadFile(uploadResultArr);
+            break;
+    }
+});

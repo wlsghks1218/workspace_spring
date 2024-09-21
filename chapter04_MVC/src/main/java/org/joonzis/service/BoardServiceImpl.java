@@ -43,8 +43,10 @@ public class BoardServiceImpl implements BoardService {
 		int result = mapper.insert(vo);
 		
 		// 2. tbl_attach 등록
+		log.info("여기서 부터 첨부파일 입력 입니다.");
 		if(vo.getAttachList() != null && vo.getAttachList().size() > 0) {
 			vo.getAttachList().forEach(attach -> {
+				log.info("이게 attachVO가 담고 있는 것들이야" + attach);
 				attach.setBno(vo.getBno());
 				attachMapper.insert(attach);
 			});
