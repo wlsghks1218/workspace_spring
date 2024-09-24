@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-admin 페이지
+	<h1>admin.jsp</h1>
+	<a href="/customLogout">Logout</a>
 </body>
 </html>
