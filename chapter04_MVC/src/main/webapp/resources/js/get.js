@@ -344,6 +344,7 @@ document.querySelector('input[type="file"]').addEventListener('change', () => {
             fileName: files[i].name,
         });
         fileAdded = true;
+        console.log(uploadResultArr);
     }
 
     if (fileAdded) {
@@ -357,6 +358,8 @@ uploadResult.addEventListener('click', (e) => {
         case 'SPAN':
             let targetFileName = e.target.closest('li').getAttribute('fileName');
             let uuid = e.target.closest('li').getAttribute('uuid');
+            let targetFileName1 = e.target.getAttribute('data-file');
+            
             console.log(targetFileName);
             console.log(uuid);
             // 파일 이름 추출
@@ -372,11 +375,12 @@ uploadResult.addEventListener('click', (e) => {
                 console.warn(`File with name ${fileNameToRemove}not found in arrays.`);
             }
 
-            deleteAttach.push({ fileName: targetFileName, uuid: uuid });
+            deleteAttach.push({ fileName: targetFileName1, uuid: uuid });
 
             // li 요소 제거
             let li = e.target.closest('li');
             uploadResult.removeChild(li);
+            console.log(uploadResultArr);
 
             // 파일 목록 갱신
             showUploadFile(uploadResultArr);

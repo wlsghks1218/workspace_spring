@@ -27,7 +27,6 @@ function checkExtension(fileName, fileSize){
 let uploadResultArr = [];
 let formData = null;
 document.querySelector('input[type="file"]').addEventListener('change', ()=> {
-	console.log("바꼈어요")
 	formData = new FormData();
 	const inputFile = document.querySelector('input[type="file"]');
 	const files = inputFile.files;
@@ -47,6 +46,7 @@ document.querySelector('input[type="file"]').addEventListener('change', ()=> {
 		uploadResultArr.push({
 			fileName: files[i].name,
 		});
+		console.log(uploadResultArr);
 		fileAdded = true;
 	}
 	
@@ -79,7 +79,6 @@ function isFileDuplicate(fileName) {
 }
 
 uploadResult.addEventListener('click', (e) => {
-    console.log(e.target);
     switch (e.target.tagName) {
         case 'SPAN':
             let targetFileName = e.target.getAttribute('data-file');
@@ -105,6 +104,7 @@ uploadResult.addEventListener('click', (e) => {
             // li 요소 제거
             let liEle = e.target.closest('li');
             uploadResult.removeChild(liEle);
+            console.log(uploadResultArr);
 
             // 파일 목록 갱신
             showUploadFile(uploadResultArr);
