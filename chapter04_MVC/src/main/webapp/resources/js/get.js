@@ -59,8 +59,8 @@ function modify() {
 	document.querySelector('td input[name=title]').removeAttribute("readonly");
 	document.querySelector('td textarea[name=content]').removeAttribute("readonly");
 	document.querySelector('#modifyBtn').id = "updateBtn";
-	document.querySelector('#updateBtn').textContent = "수정완료";
 	document.querySelector('#cancelBtn').style.display = 'inline';
+	document.querySelector('#updateBtn').textContent = "수정완료";
 	document.querySelector('#deleteBtn').style.display = 'inline';
 	document.querySelector('input[name=uploadFile]').style.display = 'inline';
 	document.querySelectorAll('.uploadResult ul li span').forEach(span => {
@@ -171,12 +171,14 @@ const closeModalBtn = document.querySelector('#closeModalBtn');
 document.querySelectorAll("button").forEach(btn => {
 	btn.addEventListener('click', (e) => {
 		let type = btn.id;
+		console.log(type);
 		switch (type) {
 			// ----- 댓글 버튼 관련 스크립트 -----
 			case "replyBtn":
 				regReplyModalStyle();
 				inputReply.value = '';
-				inputReplyer.value = '';
+				inputReplyer.value = username;
+				inputReplyer.readOnly = true;
 				openModal();
 				break;
 			case "closeModalBtn":
@@ -237,8 +239,15 @@ function registerReply() {
 }
 
 function modifyReplyModalStyle() {
-	modifyReplyBtn.classList.remove("hide");
-	removeReplyBtn.classList.remove("hide");
+	console.log(inputReplyer.value);
+	console.log(username);
+	if(username != inputReplyer.value){
+		modifyReplyBtn.classList.add("hide");
+		removeReplyBtn.classList.add("hide");
+	}else{
+		modifyReplyBtn.classList.remove("hide");
+		removeReplyBtn.classList.remove("hide");
+	}
 	addReplyBtn.classList.add("hide");
 	inputReplyDate.closest('div').classList.remove("hide");
 	inputReplyer.setAttribute('readonly', true);
@@ -248,7 +257,7 @@ function modifyReplyModalStyle() {
 let rno;
 
 function modifyModalPage(li) {
-	modifyReplyModalStyle();
+
 
 	rno = li.dataset.rno;
 	let reply = li.querySelector('p').textContent;
@@ -259,6 +268,8 @@ function modifyModalPage(li) {
 	inputReplyer.value = replyer;
 	inputReplyDate.value = replyDate;
 	console.log(rno);
+	
+	modifyReplyModalStyle();
 	openModal();
 }
 

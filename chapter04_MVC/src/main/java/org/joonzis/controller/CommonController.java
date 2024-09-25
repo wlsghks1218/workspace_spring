@@ -34,6 +34,6 @@ public class CommonController {
 	@GetMapping("/customLogout")
 	public String logoutGET() {
 		log.info("custom logout");
-		return "/customLogout";
+		return "/";
 	}
 }

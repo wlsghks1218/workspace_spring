@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <link rel="shortcut icon" href="#">
+<%@ taglib uri = "http://www.springframework.org/security/tags" prefix = "sec" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,7 @@
 					</tr>
 					<tr>
 						<th>작성자</th>
-						<td><input type="text" name="writer"></td>
+						<td><input type="text" name="writer" value="<sec:authentication property="principal.member.userId"/>" readonly></td>
 					</tr>
 					<tr>
 						<th>내용</th>

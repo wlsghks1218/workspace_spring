@@ -25,4 +25,8 @@
 		ON m.userid = a.userid
 		WHERE m.userid = #{userId}
 	</select>
+	
+ 	<insert id="signIn" parameterType="org.joonzis.domain.MemberVO">
+		insert into tbl_member values (#{userId}, #{userPw}, #{userName}, sysdate, sysdate, '1')
+	</insert>
 </mapper>

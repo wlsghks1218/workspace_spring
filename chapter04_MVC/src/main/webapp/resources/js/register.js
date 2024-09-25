@@ -26,33 +26,40 @@ function register(){
     });
 
     // fetch로 파일 업로드
-    fetch('/uploadAsyncAction', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(json => {
-        console.log(json);
-        
-        // 업로드 결과 처리 및 hidden input 생성
-        let str = '';
-        json.forEach( (file, index) => {
-            if (file.uploadPath && file.uuid && file.fileName) { // 값이 비어있지 않은 경우에만 추가
-                str += `<input type="hidden" name="attachList[${index}].uploadPath" value="${file.uploadPath}"/>`;
-                str += `<input type="hidden" name="attachList[${index}].uuid" value="${file.uuid}"/>`;
-                str += `<input type="hidden" name="attachList[${index}].fileName" value="${file.fileName}"/>`;
-            }
-        });
-
-        f.insertAdjacentHTML('beforeend', str);
-        alert("파일 업로드가 완료되었습니다.");
-        
-        // 이후에 다른 처리 필요 시 여기서 추가
-        f.action = '/board/register';
-        console.log(f);
-        f.submit();
-    })
-    .catch(err => console.error("파일 업로드 중 오류 발생:", err));
+    if(uploadResultArr.length > 0){
+    	console.log("값이 있어요 첨부 파일 업로드 해야해요");
+	    fetch('/uploadAsyncAction', {
+	        method: 'POST',
+	        body: formData
+	    })
+	    .then(response => response.json())
+	    .then(json => {
+	        console.log(json);
+	        
+	        // 업로드 결과 처리 및 hidden input 생성
+	        let str = '';
+	        json.forEach( (file, index) => {
+	            if (file.uploadPath && file.uuid && file.fileName) { // 값이 비어있지 않은 경우에만 추가
+	                str += `<input type="hidden" name="attachList[${index}].uploadPath" value="${file.uploadPath}"/>`;
+	                str += `<input type="hidden" name="attachList[${index}].uuid" value="${file.uuid}"/>`;
+	                str += `<input type="hidden" name="attachList[${index}].fileName" value="${file.fileName}"/>`;
+	            }
+	        });
+	
+	        f.insertAdjacentHTML('beforeend', str);
+	        alert("파일 업로드가 완료되었습니다.");
+	        	
+	        // 이후에 다른 처리 필요 시 여기서 추가
+	        f.action = '/board/register';
+	        console.log(f);
+	        f.submit();
+	    })
+	    
+	    .catch(err => console.error("파일 업로드 중 오류 발생:", err));
+    }
+    f.action = '/board/register';
+    console.log(f);
+    f.submit();
 }
 
 document.querySelectorAll(".panel-body-btns button").forEach(btn => {

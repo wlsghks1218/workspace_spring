@@ -34,3 +34,18 @@ function setStorageData(pageNum, amount){
 function getStorageData(){
 	return JSON.parse(localStorage.getItem('page_data'));
 }
+
+//로그인 페이지로 이동
+function loginPage() {
+    location.href = '/board/login'; 
+}
+
+//회원가입 페이지로 이동
+function joinPage() {
+    location.href = '/board/signIn'; 
+}
+
+function logout() {
+    // 로그아웃 후 customLogout 페이지로 이동
+    location.href = '/customLogout'; // 필요한 URL로 변경하세요.
+}

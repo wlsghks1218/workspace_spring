@@ -24,6 +24,7 @@
 		</div>	
 		<div>
 			<input type="submit" value="전송">
+			<a href="/">홈으로</a>
 		</div>
 		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	</form>

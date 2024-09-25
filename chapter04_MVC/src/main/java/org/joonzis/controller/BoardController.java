@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,6 +88,7 @@ public class BoardController {
 		// redirect: 로 리다이렉트 태울 수 있음
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("register")
 	public String register() {
 		log.info("register...");
@@ -151,5 +153,17 @@ public class BoardController {
 		service.remove(bno);
 		return "redirect:/board/list";
 	}
+	
+    // 회원가입 페이지로 이동
+    @GetMapping("/board/login")
+    public String moveTologin() {
+        return "customLogin"; // signIn.jsp로 이동
+    }
+	
+    // 회원가입 페이지로 이동
+    @GetMapping("/board/signIn")
+    public String moveToSingIn() {
+        return "signIn"; // signIn.jsp로 이동
+    }
 	
 }
