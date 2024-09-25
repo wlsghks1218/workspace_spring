@@ -1,4 +1,4 @@
-package org.zoonjis.controller;
+package org.joonzis.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

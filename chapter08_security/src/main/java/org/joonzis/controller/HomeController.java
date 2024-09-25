@@ -1,4 +1,4 @@
-package org.zoonjis.controller;
+package org.joonzis.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
