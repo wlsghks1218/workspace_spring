@@ -7,6 +7,7 @@ import org.joonzis.domain.BoardVO;
 import org.joonzis.domain.Criteria;
 import org.joonzis.mapper.BoardAttachMapper;
 import org.joonzis.mapper.BoardMapper;
+import org.joonzis.mapper.ReplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,9 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	private BoardAttachMapper attachMapper;
+	
+	@Autowired
+	private ReplyMapper replyMapper;
 	
 	@Override
 	public List<BoardVO> getListWithPaging(Criteria cri) {
@@ -73,6 +77,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int remove(int bno) {
 		log.info("------ remove..." + bno);
+		replyMapper.deleteAllReply(bno);
+		attachMapper.deleteAllAttach(bno);
 		return mapper.delete(bno);
 	}
 
@@ -92,5 +98,11 @@ public class BoardServiceImpl implements BoardService {
 	public void deleteAttach(String uuid) {
 		log.info("attachFile delete..." + uuid);
 		attachMapper.delete(uuid);
+	}
+	
+	@Override
+	public void deleteAllAttach(int bno) {
+		log.info("deleting all attachment....");
+		attachMapper.deleteAllAttach(bno);
 	}
 }

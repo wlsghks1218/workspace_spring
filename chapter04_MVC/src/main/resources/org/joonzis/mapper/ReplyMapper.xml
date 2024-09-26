@@ -18,4 +18,7 @@
 	<update id="replyUpdate" parameterType="org.joonzis.domain.ReplyVO">
 		update tbl_reply set reply = #{reply}, updateDate = sysdate where rno = #{rno}
 	</update>
+	<delete id="deleteAllReply" parameterType="int">
+		delete from tbl_reply where bno = #{bno}
+	</delete>
 </mapper>

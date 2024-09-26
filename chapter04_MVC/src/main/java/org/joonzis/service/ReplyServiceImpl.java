@@ -63,6 +63,9 @@ public class ReplyServiceImpl implements ReplyService {
 		return mapper.replyUpdate(vo);
 	} 
 	
-	
-	
+	@Override
+	public int deleteAllReply(int bno) {
+		log.info("deleteing all reply...");
+		return mapper.deleteAllReply(bno);
+	}
 }

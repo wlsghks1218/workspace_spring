@@ -24,4 +24,7 @@ public interface BoardService {
 	
 	// 첨부 파일 삭제
 	public void deleteAttach(String uuid);
+	
+	// 모든 첩무 파일 삭제
+	public void deleteAllAttach(int bno);
 }

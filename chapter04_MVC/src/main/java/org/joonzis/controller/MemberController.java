@@ -34,8 +34,6 @@ public class MemberController {
 		}else {
 			log.info("입력 성공");
 		}
-		
-		
 		return "/customLogin";
 	}
 }

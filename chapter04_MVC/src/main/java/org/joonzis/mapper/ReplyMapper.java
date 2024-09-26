@@ -15,4 +15,6 @@ public interface ReplyMapper {
 	public int replyDelete(int rno);
 	// 댓글 수정
 	public int replyUpdate(ReplyVO vo);
+	// 모든 댓글 삭제
+	public int deleteAllReply(int bno);
 }
