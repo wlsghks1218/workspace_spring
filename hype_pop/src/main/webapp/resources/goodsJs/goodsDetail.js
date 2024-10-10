@@ -25,6 +25,37 @@ document.addEventListener("DOMContentLoaded", function () {
             updateTotalPrice();
         }
     });
+    
+    
+    let gNo = new URLSearchParams(location.search).get('gNo');
+
+    document.getElementById('addGReply').addEventListener('click', function() {
+    	event.preventDefault();
+        const rating = document.getElementById('rating').value;
+        const reviewText = document.getElementById('reviewText').value;
+        const vo = {
+        	gNo : gNo,
+        	userNo : 1,
+            gScore: rating,
+            gComment: reviewText
+        };
+        console.log(vo);
+        fetch('/gReply/new', {
+            method: 'POST',
+            body: JSON.stringify(vo),
+            headers: {'Content-type':'application/json; charset=utf-8'}
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data); // 서버에서 반환한 메시지를 알림으로 표시
+            // 성공 시 추가 작업 (예: 리뷰 목록 업데이트)
+        })
+        .catch(error => {
+            console.error('에러:', error);
+            alert('리뷰 등록 중 문제가 발생했습니다.');
+        });
+    });
+    
 
     // 리뷰 작성란의 별점 클릭 기능
     const reviewStars = document.querySelectorAll('#newReviewStars span');
@@ -63,42 +94,7 @@ document.querySelectorAll('.actionButtons button').forEach(a => {
     });
 });
 
-let gNo = new URLSearchParams(location.search).get('gNo');
 
-document.getElementById('addGReply').addEventListener('click', function() {
-    const rating = document.getElementById('rating').value;
-    const reviewText = document.getElementById('reviewText').value;
-    console.log(reviewText);
-
-    const reviewData = {
-    	gNo : gNo,
-    	userNo : 1,
-        gScore: rating,
-        gComment: reviewText
-    };
-    console.log(reviewData);
-    fetch('/gReply/new', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(reviewData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('네트워크 응답이 실패했습니다.');
-        }
-        return response.text();
-    })
-    .then(data => {
-        alert(data); // 서버에서 반환한 메시지를 알림으로 표시
-        // 성공 시 추가 작업 (예: 리뷰 목록 업데이트)
-    })
-    .catch(error => {
-        console.error('에러:', error);
-        alert('리뷰 등록 중 문제가 발생했습니다.');
-    });
-});
 
 //별점 선택 기능 추가
 const stars = document.querySelectorAll('#newReviewStars span');

@@ -1,7 +1,7 @@
 package org.hype.mapper;
 
-import org.hype.domain.gReplyVO;
+import org.hype.domain.GReplyVO;
 
 public interface GReplyMapper {
-	public int insertGReply(gReplyVO gVo); 
+	public int insertGReply(GReplyVO gVo); 
 }

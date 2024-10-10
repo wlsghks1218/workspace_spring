@@ -1,7 +1,7 @@
 package org.hype.service;
 
-import org.hype.domain.gReplyVO;
+import org.hype.domain.GReplyVO;
 
 public interface GReplyService {
-	public int insertGReply(gReplyVO gVo); 
+	public int insertGReply(GReplyVO gVo); 
 }

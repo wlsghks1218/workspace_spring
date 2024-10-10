@@ -2,7 +2,7 @@ package org.joonzis.service;
 
 import java.util.List;
 
-import org.hype.domain.gReplyVO;
+import org.hype.domain.GReplyVO;
 import org.hype.domain.goodsVO;
 import org.hype.service.GReplyService;
 import org.hype.service.GoodsService;
@@ -27,7 +27,7 @@ public class SampleServiceTest {
 	@Test
 	public void test() throws Exception{
 		System.out.println("gRService: " + gRService); // null인지 확인
-		gReplyVO gVo = new gReplyVO();
+		GReplyVO gVo = new GReplyVO();
 		gVo.setGComment("hi");
 		gVo.setGNo(10);
 		gVo.setGScore(4);

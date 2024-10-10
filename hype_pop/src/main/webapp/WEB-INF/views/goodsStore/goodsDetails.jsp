@@ -186,7 +186,7 @@ body {
 		<p id="selectedRating">선택한 별점: 0</p>
 		<textarea id="reviewText" name="reviewText"	placeholder="후기를 작성해주세요..." rows="5" cols="50"></textarea>
 		<input type="hidden" id="rating" name="rating" value="0">
-		<input type="button" id="addGReply" name="addGReply" value="등록하기">
+		<input type="button" id="addGReply" value="등록하기">
 	</form>
 	<div class="avgStarRating" id="avgReviewStars">
 		평균 별점
