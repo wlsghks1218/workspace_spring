@@ -3,7 +3,6 @@ package org.hype.controller;
 import java.util.List;
 import java.util.Locale;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
-
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Locale locale, Model model) {
         
-        // ÆË¾÷ ½ºÅä¾î ¸®½ºÆ®¸¦ ¼­ºñ½º¿¡¼­ ¹Ş¾Æ¿À´Â ÄÚµå ÇÊ¿ä
+        // ì‚¬ìš©ìì—ê²Œ ë³´ì—¬ì¤„ ë°ì´í„° ë¦¬ìŠ¤íŠ¸ë¥¼ ì¤€ë¹„í•©ë‹ˆë‹¤.
     
+        // ì¤€ë¹„í•œ ë°ì´í„°ë¥¼ ëª¨ë¸ì— ì¶”ê°€í•˜ì—¬ JSPë¡œ ì „ë‹¬í•©ë‹ˆë‹¤.
         
-        // ¸ğµ¨¿¡ ÆË¾÷ ½ºÅä¾î ¸®½ºÆ®¸¦ Ãß°¡ÇÏ¿© JSP¿¡ Àü´Ş ÇÏ´Â ÄÚµå ÇÊ¿ä
-        
-
-        return "popUp/popUpMain"; // ¸ŞÀÎ È­¸é JSP·Î ÀÌµ¿
+        return "popUp/popUpMain"; // ë©”ì¸ JSPë¡œ ì´ë™
     }
 }

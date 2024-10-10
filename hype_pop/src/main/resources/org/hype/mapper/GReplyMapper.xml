@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hype.mapper.GReplyMapper">
+	<insert id="insertGReply" parameterType="org.hype.domain.gReplyVO">
+		insert into goods_reply_table
+		 (gReplyNo, gNo, userNo, gComment, gScore, gRegDate, gUpdateDate)
+		 values
+		 (goods_reply_seq.nextVal, #{gNo}, #{userNo}, #{gComment}, #{gScore}, SYSDATE, SYSDATE)
+	</insert>
+</mapper>

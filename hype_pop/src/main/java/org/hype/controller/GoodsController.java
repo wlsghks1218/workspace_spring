@@ -1,5 +1,11 @@
 package org.hype.controller;
 
+import java.util.List;
+
+import org.hype.domain.goodsVO;
+import org.hype.domain.rankVO;
+import org.hype.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,48 +18,46 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/goodsStore/*")
 public class GoodsController {
+	
+	@Autowired
+	private GoodsService gService;
+	
     @GetMapping("/goodsDetails")
-    public String goodsSearch(@RequestParam("goodsName") String goodsName, Model model) {
-        // searchData¸¦ »ç¿ëÇÏ¿© °Ë»ö ·ÎÁ÷À» Ã³¸®
-        System.out.println("°Ë»ö µ¥ÀÌÅÍ: " + goodsName);
-        
-        //DB¿¡¼­ Á¤º¸ ¹Ş¾Æ¿À´Â ·ÎÁ÷ÀÌ ¿©±âÀÖ¾î¾ßÇÔ
-        
-        // searchData¸¦ ¸ğµ¨¿¡ Ãß°¡ÇÏ¿© JSP·Î Àü´Ş
-        model.addAttribute("goodsName", goodsName);
-        
-        return "/goodsStore/goodsDetails"; // °Ë»ö °á°ú¸¦ º¸¿©ÁÙ JSP ÆäÀÌÁö ÀÌ¸§
+    public String goodsSearch(@RequestParam("gNo") int gNo, Model model) {
+        System.out.println("êµ¿ì¦ˆ ìƒì„¸ í˜ì´ì§€ gNo : " + gNo);
+        model.addAttribute("goods", gService.getOneByGno(gNo));
+        log.info("like count ëŠ” " + gService.getOneByGno(gNo).getLikeCount());
+        return "/goodsStore/goodsDetails";
     }
  
-
     @GetMapping("/goodsMain")
-    public String goodsMain() {
-    	
-    	// ±ÂÁîµé Á¤º¸ ¹Ş¾Æ¿À´Â ·ÎÁ÷ ÇÊ¿ä
-         
-         log.info("±ÂÁî ¸ŞÀÎÆäÀÌÁö·Î");
+    public String goodsMain(Model model) {
+        // ë©”ì¸ í˜ì´ì§€ë¥¼ ë³´ì—¬ì¤ë‹ˆë‹¤
+        log.info("ë©”ì¸ í˜ì´ì§€ë¡œ ì´ë™");
+        List<goodsVO> vo1 = gService.getListByLikeCount();
+        vo1.forEach(item -> log.info("vo1ëŠ” " + item.getGName()));
+        model.addAttribute("likeGoods", gService.getListByLikeCount());
         
-        return "/goodsStore/goodsMain"; // °Ë»ö °á°ú¸¦ º¸¿©ÁÙ JSP ÆäÀÌÁö ÀÌ¸§
+        List<goodsVO> vo2 = gService.getListByInterestOneNotLogin();
+        vo2.forEach(item -> log.info("vo2ëŠ” " + item.getGName()));
+        
+        List<goodsVO> vo3 = gService.getListByInterestTwoNotLogin();
+        vo3.forEach(item -> log.info("vo3ëŠ” " + item.getGName()));
+        
+        List<goodsVO> vo4 = gService.getListByInterestThreeNotLogin();
+        vo4.forEach(item -> log.info("vo4ëŠ” " + item.getGName()));
+        
+        model.addAttribute("interestOneNotLogin", gService.getListByInterestOneNotLogin());
+        model.addAttribute("interestTwoNotLogin", gService.getListByInterestTwoNotLogin());
+        model.addAttribute("interestThreeNotLogin", gService.getListByInterestThreeNotLogin());
+        return "/goodsStore/goodsMain"; // ë©”ì¸ í˜ì´ì§€ JSPì˜ ê²½ë¡œ
     }
-//    @GetMapping("/goodsMain")
-//    public String goodsMain(Model model) {
-//        log.info("±ÂÁî ¸ŞÀÎÆäÀÌÁö·Î");
-//
-//        // ¼­ºñ½º¿¡¼­ ±ÂÁî ¸®½ºÆ®¸¦ ¹Ş¾Æ¿È
-//        List<Goods> goodsList = goodsService.getGoodsList();
-//        
-//        // ¸ğµ¨¿¡ ±ÂÁî ¸®½ºÆ® Ãß°¡
-//        model.addAttribute("goodsList", goodsList);
-//        
-//        return "/goodsStore/goodsMain"; // ¸ŞÀÎ ÆäÀÌÁö·Î ÀÌµ¿
-//    }
+
     @GetMapping("/goodsSearch")
     public String goodsSearch() {
-         
-    	// ±ÂÁîµé Á¤º¸ ¹Ş¾Æ¿À´Â ·ÎÁ÷ ÇÊ¿ä
-    	
-         log.info("±ÂÁî °Ë»öÆäÀÌÁö·Î");
+        // ê²€ìƒ‰ í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤
+        log.info("ìƒí’ˆ ê²€ìƒ‰ í˜ì´ì§€ë¡œ ì´ë™");
         
-        return "/goodsStore/goodsSearch"; // °Ë»ö °á°ú¸¦ º¸¿©ÁÙ JSP ÆäÀÌÁö ÀÌ¸§
+        return "/goodsStore/goodsSearch"; // ê²€ìƒ‰ í˜ì´ì§€ JSPì˜ ê²½ë¡œ
     }
 }

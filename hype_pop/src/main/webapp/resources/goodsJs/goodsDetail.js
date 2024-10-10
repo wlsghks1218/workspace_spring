@@ -1,94 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const reviews = [
-        { rating: 4, comment: "여기 정말 좋았어요!", isMine: true },
-        { rating: 5, comment: "최고의 경험이었어요!", isMine: false },
-        { rating: 3, comment: "보통이었어요.", isMine: true }
-    ];
-
-    function loadUserReviews() {
-        const reviewList = document.getElementById('reviewList');
-        reviewList.innerHTML = '';
-
-        reviews.forEach((review) => {
-            const reviewDiv = document.createElement('div');
-            reviewDiv.classList.add('reviewItem');
-
-            const starDiv = document.createElement('div');
-            starDiv.classList.add('userStarRating');
-            for (let i = 1; i <= 5; i++) {
-                const star = document.createElement('span');
-                star.textContent = '★';
-                star.setAttribute('data-value', i);
-                star.style.color = i <= review.rating ? 'gold' : 'gray';
-                starDiv.appendChild(star);
-            }
-
-            const commentP = document.createElement('p');
-            commentP.textContent = review.comment;
-            reviewDiv.appendChild(starDiv);
-            reviewDiv.appendChild(commentP);
-
-            if (review.isMine) {
-                const kebabMenu = document.createElement('div');
-                kebabMenu.classList.add('kebabMenu');
-                kebabMenu.innerHTML = '⋮';
-                reviewDiv.appendChild(kebabMenu);
-
-                const kebabMenuOptions = document.createElement('ul');
-                kebabMenuOptions.classList.add('kebabMenuOptions');
-                kebabMenuOptions.innerHTML = `
-                    <li class="editReview">수정</li>
-                    <li class="deleteReview">삭제</li>
-                `;
-                reviewDiv.appendChild(kebabMenuOptions);
-
-                // 케밥 메뉴 클릭 이벤트 리스너 추가
-                kebabMenu.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    const optionsVisible = kebabMenuOptions.classList.contains('visible');
-                    document.querySelectorAll('.kebabMenuOptions').forEach(menu => menu.classList.remove('visible'));
-                    if (!optionsVisible) {
-                        kebabMenuOptions.classList.add('visible');
-                    }
-                });
-
-                // 수정 버튼 클릭 이벤트 리스너 추가
-                kebabMenuOptions.querySelector('.editReview').addEventListener('click', function () {
-                    updateReviewStarRating(reviewDiv, review.rating);
-                    const ratingInput = document.getElementById('rating');
-                    ratingInput.value = review.rating; // 기존 별점으로 업데이트
-                });
-
-                // 삭제 버튼 클릭 이벤트 리스너 추가
-                kebabMenuOptions.querySelector('.deleteReview').addEventListener('click', function () {
-                    // 리뷰 삭제 로직 추가 (예: reviews 배열에서 제거)
-                });
-            }
-
-            reviewList.appendChild(reviewDiv);
-        });
-    }
-
-    function updateReviewStarRating(reviewDiv, rating) {
-        const stars = reviewDiv.querySelectorAll('.userStarRating span');
-        stars.forEach(star => {
-            star.style.color = 'gray'; // 초기화
-        });
-        for (let i = 1; i <= rating; i++) {
-            stars[i - 1].style.color = 'gold'; // 선택된 별색으로 변경
-        }
-    }
-
     // 수량 조정 기능 추가
     let quantity = 1;
     const quantityInput = document.getElementById('quantity');
     const totalPriceDisplay = document.getElementById('totalPrice');
-    const goodsPrice = 20000; // 가격을 상수로 설정
-
+    
+    console.log("가격 : " + goodsPrice);
+    
     function updateTotalPrice() {
-        totalPriceDisplay.textContent = goodsPrice * quantity;
+    	const totalPrice = goodsPrice * quantity;
+    	totalPriceDisplay.innerText = totalPrice + "원";
     }
-
+    updateTotalPrice();
+    
     document.getElementById('increaseBtn').addEventListener('click', function () {
         quantity++;
         quantityInput.value = quantity;
@@ -102,8 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
             updateTotalPrice();
         }
     });
-
-    loadUserReviews();
 
     // 리뷰 작성란의 별점 클릭 기능
     const reviewStars = document.querySelectorAll('#newReviewStars span');
@@ -125,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
 document.querySelectorAll('.actionButtons button').forEach(a => {
     a.addEventListener('click', (event) => {
         let buttonName = a.id;
@@ -139,3 +62,52 @@ document.querySelectorAll('.actionButtons button').forEach(a => {
         }
     });
 });
+
+let gNo = new URLSearchParams(location.search).get('gNo');
+
+document.getElementById('addGReply').addEventListener('click', function() {
+    const rating = document.getElementById('rating').value;
+    const reviewText = document.getElementById('reviewText').value;
+    console.log(reviewText);
+
+    const reviewData = {
+    	gNo : gNo,
+    	userNo : 1,
+        gScore: rating,
+        gComment: reviewText
+    };
+    console.log(reviewData);
+    fetch('/gReply/new', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('네트워크 응답이 실패했습니다.');
+        }
+        return response.text();
+    })
+    .then(data => {
+        alert(data); // 서버에서 반환한 메시지를 알림으로 표시
+        // 성공 시 추가 작업 (예: 리뷰 목록 업데이트)
+    })
+    .catch(error => {
+        console.error('에러:', error);
+        alert('리뷰 등록 중 문제가 발생했습니다.');
+    });
+});
+
+//별점 선택 기능 추가
+const stars = document.querySelectorAll('#newReviewStars span');
+stars.forEach(star => {
+    star.addEventListener('click', function() {
+        const selectedValue = this.getAttribute('data-value');
+        document.getElementById('rating').value = selectedValue;
+        document.getElementById('selectedRating').innerText = `선택한 별점: ${selectedValue}`;
+    });
+});
+
+

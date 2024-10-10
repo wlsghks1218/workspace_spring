@@ -25,17 +25,6 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/reply/")
 public class ReplyController {
 	
-	/*
-	 * 동작에 따른 url 방법(http 전송 방식)
-	 * 1. 등록 - /reply/new - POST
-	 * 2. 전체 댓글 - /reply/pages/:bno - GET
-	 * 3. 조회 - /reply/:rno - GET
-	 * 4. 삭제 - /reply/:rno - DELETE
-	 * 5. 수정 - /reply/:rno - PUT or PATCH
-	 * 
-	 * 
-	 */
-	
 	@Autowired
 	private ReplyService service;
 	

@@ -1,24 +1,219 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+h1 {
+	text-align: center;
+}
+
+h2 {
+	padding-left: 25%;
+}
+
+#hotGoods {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	width: 50%;
+	height: 200px;
+}
+
+.goods-container1 {
+	display: flex;
+	overflow: hidden;
+	width: 100%; /* ë³´ì—¬ì¤„ ì˜ì—­ì˜ ë„ˆë¹„ (4ê°œ ì•„ì´í…œ) */
+	height: 100%;
+}
+
+.goods-item1 {
+	background-color: lightgray;
+	min-width: 22.5%; /* ê° ì•„ì´í…œì˜ ë„ˆë¹„ */
+	height: 100%;
+	margin: 0 10px; /* ì¢Œìš° ë§ˆì§„ */
+	transition: transform 0.3s ease;
+}
+
+#prevBtn1, #nextBtn1 {
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	padding: 10px;
+	cursor: pointer;
+}
+
+#interestGoods1 {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	width: 50%;
+	height: 300px;
+}
+
+.goods-container2 {
+	display: flex;
+	overflow: hidden;
+	width: 100%; /* ë³´ì—¬ì¤„ ì˜ì—­ì˜ ë„ˆë¹„ (4ê°œ ì•„ì´í…œ) */
+}
+
+.goods-item2 {
+	background-color: lightgray;
+	min-width: 22.5%; /* ê° ì•„ì´í…œì˜ ë„ˆë¹„ */
+	height: 190px;
+	margin: 0 10px; /* ì¢Œìš° ë§ˆì§„ */
+	transition: transform 0.3s ease;
+}
+
+#prevBtn2, #nextBtn2 {
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	padding: 10px;
+	cursor: pointer;
+}
+
+#interestGoods2 {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	width: 50%;
+	height: 300px;
+}
+
+.goods-container3 {
+	display: flex;
+	overflow: hidden;
+	width: 100%; /* ë³´ì—¬ì¤„ ì˜ì—­ì˜ ë„ˆë¹„ (4ê°œ ì•„ì´í…œ) */
+}
+
+.goods-item3 {
+	background-color: lightgray;
+	min-width: 22.5%; /* ê° ì•„ì´í…œì˜ ë„ˆë¹„ */
+	height: 190px;
+	margin: 0 10px; /* ì¢Œìš° ë§ˆì§„ */
+	transition: transform 0.3s ease;
+}
+
+#prevBtn3, #nextBtn3 {
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	padding: 10px;
+	cursor: pointer;
+}
+
+#interestGoods3 {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	width: 50%;
+	height: 300px;
+}
+
+.goods-container4 {
+	display: flex;
+	overflow: hidden;
+	width: 100%; /* ë³´ì—¬ì¤„ ì˜ì—­ì˜ ë„ˆë¹„ (4ê°œ ì•„ì´í…œ) */
+}
+
+.goods-item4 {
+	background-color: lightgray;
+	min-width: 22.5%; /* ê° ì•„ì´í…œì˜ ë„ˆë¹„ */
+	height: 190px;
+	margin: 0 10px; /* ì¢Œìš° ë§ˆì§„ */
+	transition: transform 0.3s ease;
+}
+
+#prevBtn4, #nextBtn4 {
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	padding: 10px;
+	cursor: pointer;
+}
+.goods-like{
+	height: 8%;
+	text-align: right;
+}
+
+.goods-name {
+    background-color: red;
+       display: flex;
+    align-items: flex-end; /* ì„¸ë¡œ ì •ë ¬: ì•„ë˜ìª½ */
+    justify-content: flex-start; /* ê°€ë¡œ ì •ë ¬: ì™¼ìª½ */
+    height: 80%;
+}
+.goods-price{
+text-align: right;
+    background-color: yellow;
+    height: 8%;
+}
+
+</style>
 </head>
 <body>
-	<h1>±ÂÁî ¸ŞÀÎ ÆäÀÌÁö ÀÔ´Ï´Ù</h1>
-	<jsp:include page="layout/popUpHeader.jsp" />
-    
-    <h1>ÇöÀç ÀÎ±âÀÖ´Â ÆË¾÷½ºÅä¾î</h1>
+    <jsp:include page="layout/popUpHeader.jsp" />
+    <h1>í˜„ì¬ ì¸ê¸°ìˆëŠ” êµ¿ì¦ˆ</h1>
     <div id="hotGoods">
-		<span id="hotGoods1">ÀÎ±â ³ÑÄ¡´Â ±ÂÁî1</span> &nbsp; 
-		<span id="hotGoods2">ÀÎ±â ³ÑÄ¡´Â ±ÂÁî2</span> &nbsp; 
-		<span id="hotGoods3">ÀÎ±â ³ÑÄ¡´Â ±ÂÁî3</span> &nbsp;
-	    <span id="hotGoods4">ÀÎ±â ³ÑÄ¡´Â ±ÂÁî4</span>
-	</div>
-	
-	<jsp:include page="layout/popUpFooter.jsp" />
-	<jsp:include page="layout/goodsNavBar.jsp" />¤¤	
+        <button id="prevBtn1">â—€</button>
+        <div class="goods-container1" id="goodsContainer1">
+			<c:forEach var="vo" items="${likeGoods }">
+            <div class="goods-item1">
+            	<input type="hidden" value="${vo.GNo }">
+            	<div class="goods-like">${vo.likeCount }</div>
+            	<div class="goods-name">${vo.GName }</div>
+            	<div class="goods-price">${vo.GPrice }</div>
+           	</div>
+			</c:forEach>
+        </div>
+        <button id="nextBtn1">â–¶</button>
+    </div>
+    <h1>ê´€ì‹¬ì‚¬ë³„ ì¸ê¸° ëª©ë¡</h1>
+    <h2>????</h2>
+    <div id="interestGoods1">
+        <button id="prevBtn2">â—€</button>
+        <div class="goods-container2" id="goodsContainer2">
+  			<c:forEach var="vo" items="${interestOneNotLogin }">
+         	   <div class="goods-item2">
+	            	<div class="goods-like">${vo.likeCount }</div>
+	            	<div class="goods-name">${vo.GName }</div>
+	            	<div class="goods-price">${vo.GPrice }</div>
+            	</div>
+			</c:forEach>
+        </div>
+        <button id="nextBtn2">â–¶</button>
+    </div>
+        <h2>????</h2>
+    <div id="interestGoods2">
+        <button id="prevBtn3">â—€</button>
+        <div class="goods-container3" id="goodsContainer3">
+  			<c:forEach var="vo" items="${interestTwoNotLogin }">
+            	<div class="goods-item3">
+	            	<div class="goods-like">${vo.likeCount }</div>
+	            	<div class="goods-name">${vo.GName }</div>
+	            	<div class="goods-price">${vo.GPrice }</div>
+            	</div>
+   			</c:forEach>
+        </div>
+        <button id="nextBtn3">â–¶</button>
+    </div>
+        <h2>????</h2>
+    <div id="interestGoods3">
+        <button id="prevBtn4">â—€</button>
+        <div class="goods-container4" id="goodsContainer4">
+  			<c:forEach var="vo" items="${interestThreeNotLogin }">
+         	   <div class="goods-item4">
+	            	<div class="goods-like">${vo.likeCount }</div>
+	            	<div class="goods-name">${vo.GName }</div>
+	            	<div class="goods-price">${vo.GPrice }</div>
+            	</div>
+  			</c:forEach>
+        </div>
+        <button id="nextBtn4">â–¶</button>
+    </div>
+    <jsp:include page="layout/popUpFooter.jsp" />
+    <jsp:include page="layout/goodsNavBar.jsp" />
 </body>
+<script>
+</script>
 </html>
