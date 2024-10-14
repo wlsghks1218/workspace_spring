@@ -1,11 +1,18 @@
 package org.hype.domain;
 import java.sql.Date;
-import lombok.Data;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GReplyVO {
 	private int gReplyNo, gNo, userNo, gScore;
-	private String gComment;
 	Date gRegDate, gUpdateDate;
+	private String gComment;
 }
 	

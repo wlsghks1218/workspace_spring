@@ -1,3 +1,5 @@
+const rs = replyService;
+
 document.addEventListener("DOMContentLoaded", function () {
     // 수량 조정 기능 추가
     let quantity = 1;
@@ -28,32 +30,23 @@ document.addEventListener("DOMContentLoaded", function () {
     
     
     let gNo = new URLSearchParams(location.search).get('gNo');
-
     document.getElementById('addGReply').addEventListener('click', function() {
     	event.preventDefault();
-        const rating = document.getElementById('rating').value;
-        const reviewText = document.getElementById('reviewText').value;
-        const vo = {
-        	gNo : gNo,
-        	userNo : 1,
-            gScore: rating,
-            gComment: reviewText
-        };
-        console.log(vo);
-        fetch('/gReply/new', {
-            method: 'POST',
-            body: JSON.stringify(vo),
-            headers: {'Content-type':'application/json; charset=utf-8'}
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert(data); // 서버에서 반환한 메시지를 알림으로 표시
-            // 성공 시 추가 작업 (예: 리뷰 목록 업데이트)
-        })
-        .catch(error => {
-            console.error('에러:', error);
-            alert('리뷰 등록 중 문제가 발생했습니다.');
-        });
+	    const rating = document.getElementById('rating').value;
+	    const reviewText = document.getElementById('reviewText').value;
+		rs.add({
+//			gNo: 10,
+			userNo: 1
+//			gComment: reviewText
+//			gScore: rating
+		}, function (result) {
+			console.log("result : " + result);
+			if (result == "success") {
+				alert("댓글이 등록되었습니다.");
+			} else {
+				alert("댓글 등록 실패");
+			}
+		});
     });
     
 

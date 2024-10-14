@@ -205,8 +205,8 @@ body {
 	<jsp:include page="layout/popUpFooter.jsp" />
 	<jsp:include page="layout/goodsNavBar.jsp" />
 </body>
-<script type="text/javascript" src="/resources/goodsJs/goodsDetail.js">
-</script>
+<script type="text/javascript" src="/resources/goodsJs/gReply.js"></script>
+<script type="text/javascript" src="/resources/goodsJs/goodsDetail.js"></script>
 <script>
 	var goodsPrice = ${goods.GPrice};
 	console.log(goodsPrice);
