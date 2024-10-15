@@ -4,14 +4,20 @@
 <mapper namespace="org.hype.mapper.GReplyMapper">
 	<insert id="insertGReply" parameterType="org.hype.domain.GReplyVO">
 		insert into goods_reply_table
-		 (gReplyNo, gNo, userNo, gComment, gScore, gRegDate, gUpdateDate)
+		 (gReplyNo, gno, userNo, gcomment, gscore, userId, gRegDate, gUpdateDate)
 		 values
-		 (goods_reply_seq.nextVal, #{gNo}, #{userNo}, #{gComment}, #{gScore}, SYSDATE, SYSDATE)
+		 (goods_reply_seq.nextVal, #{gno}, #{userNo}, #{gcomment}, #{gscore}, #{userId}, SYSDATE, SYSDATE)
 	</insert>
 	<select id="getAllReplyList" resultType="org.hype.domain.GReplyVO">
-		select * from goods_reply_table where gNo = #{gNo} and not userNo = #{userNo}
+		select * from goods_reply_table where gno = #{gno} and userNo != #{userNo}
 	</select>
 	<select id="getMyReply" resultType="org.hype.domain.GReplyVO">
-		select * from goods_reply_table where gNo = #{gNo} and userNo = #{userNo}
+		select * from goods_reply_table where gno = #{gno} and userNo = #{userNo}
+	</select>
+	<select id="getAvgStars" resultType="double">
+		select avg(gscore) from goods_reply_table
+	</select>
+	<select id="chkReplied">
+		select count(*) from goods_reply_table where userId = #{userId}
 	</select>
 </mapper>

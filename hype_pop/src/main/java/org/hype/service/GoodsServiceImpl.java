@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hype.domain.gCatVO;
 import org.hype.domain.goodsVO;
 import org.hype.domain.rankVO;
 import org.hype.mapper.GoodsMapper;
@@ -35,7 +36,7 @@ public class GoodsServiceImpl implements GoodsService{
 	    Map<String, String> params = new HashMap<>();
 	    params.put("key", category);
         List<goodsVO> vo = gMapper.getListByInterestNotLogin(params);
-        vo.forEach(item -> log.info("rVo 0번의 vo는 " + item.getGName()));
+        vo.forEach(item -> log.info("rVo 0번의 vo는 " + item.getGname()));
 		return gMapper.getListByInterestNotLogin(params);
 	}
 	
@@ -48,7 +49,7 @@ public class GoodsServiceImpl implements GoodsService{
 	    Map<String, String> params = new HashMap<>();
 	    params.put("key", category);
         List<goodsVO> vo = gMapper.getListByInterestNotLogin(params);
-        vo.forEach(item -> log.info("rVo 0번의 vo는 " + item.getGName()));
+        vo.forEach(item -> log.info("rVo 0번의 vo는 " + item.getGname()));
 		return gMapper.getListByInterestNotLogin(params);
 	}
 
@@ -61,7 +62,7 @@ public class GoodsServiceImpl implements GoodsService{
 	    Map<String, String> params = new HashMap<>();
 	    params.put("key", category);
         List<goodsVO> vo = gMapper.getListByInterestNotLogin(params);
-        vo.forEach(item -> log.info("rVo 0번의 vo는 " + item.getGName()));
+        vo.forEach(item -> log.info("rVo 0번의 vo는 " + item.getGname()));
 		return gMapper.getListByInterestNotLogin(params);
 	}
 
@@ -83,12 +84,16 @@ public class GoodsServiceImpl implements GoodsService{
 		return null;
 	}
 
-	// 굿즈 상세 페이지 1개 불러오기
 	@Override
-	public goodsVO getOneByGno(int gNo) {
-		return gMapper.getOneByGno(gNo);
+	public goodsVO getOneByGno(int gno) {
+		return gMapper.getOneByGno(gno);
 	}
+	
+    public List<goodsVO> getSearchList(String searchText, int offset, int limit) {
+        return gMapper.getSearchList(searchText, offset, limit);
+    }
 
-	
-	
+    public gCatVO getCategory(int gno) {
+        return gMapper.getCategory(gno);
+    }
 }

@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GReplyVO {
-	private int gReplyNo, gNo, userNo, gScore;
-	Date gRegDate, gUpdateDate;
-	private String gComment;
+	private int greplyNo, gno, userNo, gscore;
+	private Date gregDate, gupdateDate;
+	private String gcomment, userId;
 }
 	

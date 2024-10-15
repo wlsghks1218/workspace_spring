@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
 	.footer-container {
 	    display: flex;
@@ -50,5 +49,4 @@
     <div class="footer-bottom">
         <p>&copy; 2024 Your Company Name. 모든 권리 보유.</p>
     </div>
-<script type="text/javascript" src="/resources/goodsJs/goodsMain.js"></script>
 </html>

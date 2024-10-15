@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -7,148 +6,108 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-h1 {
-	text-align: center;
+/* 전체 레이아웃 */
+body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #141414;
+    color: white;
 }
 
-h2 {
-	padding-left: 25%;
+/* 네비게이션 바 */
+#popUpHeader {
+    background-color: #141414;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#hotGoods {
-	display: flex;
-	align-items: center;
-	margin: auto;
-	width: 50%;
-	height: 200px;
+h1, h2 {
+    text-align: center;
+    color: #e50914;
+    margin-bottom: 20px;
 }
 
-.goods-container1 {
-	display: flex;
-	overflow: hidden;
-	width: 100%; /* 보여줄 영역의 너비 (4개 아이템) */
-	height: 100%;
+/* 굿즈 컨테이너 스타일 */
+#hotGoods, #interestGoods1, #interestGoods2, #interestGoods3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+    position: relative;
 }
 
-.goods-item1 {
-	background-color: lightgray;
-	min-width: 22.5%; /* 각 아이템의 너비 */
-	height: 100%;
-	margin: 0 10px; /* 좌우 마진 */
-	transition: transform 0.3s ease;
+.goods-container1, .goods-container2, .goods-container3, .goods-container4 {
+    display: flex;
+    overflow: hidden;
+    width: 80%;
+    height: 300px;
+    border-radius: 10px;
+    position: relative;
 }
 
-#prevBtn1, #nextBtn1 {
-	background-color: #f0f0f0;
-	border: 1px solid #ccc;
-	padding: 10px;
-	cursor: pointer;
+.goods-item1, .goods-item2, .goods-item3, .goods-item4 {
+    background-color: #333;
+    color: white;
+    min-width: 200px;
+    height: 100%;
+    margin: 0 10px;
+    border-radius: 10px;
+    padding: 10px;
+    transition: transform 0.3s ease;
 }
 
-#interestGoods1 {
-	display: flex;
-	align-items: center;
-	margin: auto;
-	width: 50%;
-	height: 300px;
+.goods-item1:hover, .goods-item2:hover, .goods-item3:hover, .goods-item4:hover {
+    transform: scale(1.1);
 }
 
-.goods-container2 {
-	display: flex;
-	overflow: hidden;
-	width: 100%; /* 보여줄 영역의 너비 (4개 아이템) */
-}
-
-.goods-item2 {
-	background-color: lightgray;
-	min-width: 22.5%; /* 각 아이템의 너비 */
-	height: 190px;
-	margin: 0 10px; /* 좌우 마진 */
-	transition: transform 0.3s ease;
-}
-
-#prevBtn2, #nextBtn2 {
-	background-color: #f0f0f0;
-	border: 1px solid #ccc;
-	padding: 10px;
-	cursor: pointer;
-}
-
-#interestGoods2 {
-	display: flex;
-	align-items: center;
-	margin: auto;
-	width: 50%;
-	height: 300px;
-}
-
-.goods-container3 {
-	display: flex;
-	overflow: hidden;
-	width: 100%; /* 보여줄 영역의 너비 (4개 아이템) */
-}
-
-.goods-item3 {
-	background-color: lightgray;
-	min-width: 22.5%; /* 각 아이템의 너비 */
-	height: 190px;
-	margin: 0 10px; /* 좌우 마진 */
-	transition: transform 0.3s ease;
-}
-
-#prevBtn3, #nextBtn3 {
-	background-color: #f0f0f0;
-	border: 1px solid #ccc;
-	padding: 10px;
-	cursor: pointer;
-}
-
-#interestGoods3 {
-	display: flex;
-	align-items: center;
-	margin: auto;
-	width: 50%;
-	height: 300px;
-}
-
-.goods-container4 {
-	display: flex;
-	overflow: hidden;
-	width: 100%; /* 보여줄 영역의 너비 (4개 아이템) */
-}
-
-.goods-item4 {
-	background-color: lightgray;
-	min-width: 22.5%; /* 각 아이템의 너비 */
-	height: 190px;
-	margin: 0 10px; /* 좌우 마진 */
-	transition: transform 0.3s ease;
-}
-
-#prevBtn4, #nextBtn4 {
-	background-color: #f0f0f0;
-	border: 1px solid #ccc;
-	padding: 10px;
-	cursor: pointer;
-}
-.goods-like{
-	height: 8%;
-	text-align: right;
+/* 가격, 좋아요, 이름 등 */
+.goods-like {
+    text-align: right;
+    color: #fff;
 }
 
 .goods-name {
-    background-color: red;
-       display: flex;
-    align-items: flex-end; /* 세로 정렬: 아래쪽 */
-    justify-content: flex-start; /* 가로 정렬: 왼쪽 */
-    height: 80%;
-}
-.goods-price{
-text-align: right;
-    background-color: yellow;
-    height: 8%;
+    background-color: #e50914;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    margin-top: 20px;
+    height: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+.goods-price {
+    text-align: right;
+    color: #f5c518;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 좌우 버튼 */
+#prevBtn1, #nextBtn1, #prevBtn2, #nextBtn2, #prevBtn3, #nextBtn3, #prevBtn4, #nextBtn4 {
+    background-color: #e50914;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+#prevBtn1, #prevBtn2, #prevBtn3, #prevBtn4 {
+    left: 10px;
+}
+
+#nextBtn1, #nextBtn2, #nextBtn3, #nextBtn4 {
+    right: 10px;
+}
 </style>
 </head>
 <body>
@@ -159,10 +118,10 @@ text-align: right;
         <div class="goods-container1" id="goodsContainer1">
 			<c:forEach var="vo" items="${likeGoods }">
             <div class="goods-item1">
-            	<input type="hidden" value="${vo.GNo }">
+            	<input type="hidden" value="${vo.gno }">
             	<div class="goods-like">${vo.likeCount }</div>
-            	<div class="goods-name">${vo.GName }</div>
-            	<div class="goods-price">${vo.GPrice }</div>
+            	<div class="goods-name">${vo.gname }</div>
+            	<div class="goods-price">${vo.gprice }</div>
            	</div>
 			</c:forEach>
         </div>
@@ -176,8 +135,8 @@ text-align: right;
   			<c:forEach var="vo" items="${interestOneNotLogin }">
          	   <div class="goods-item2">
 	            	<div class="goods-like">${vo.likeCount }</div>
-	            	<div class="goods-name">${vo.GName }</div>
-	            	<div class="goods-price">${vo.GPrice }</div>
+	            	<div class="goods-name">${vo.gname }</div>
+	            	<div class="goods-price">${vo.gprice }</div>
             	</div>
 			</c:forEach>
         </div>
@@ -190,8 +149,8 @@ text-align: right;
   			<c:forEach var="vo" items="${interestTwoNotLogin }">
             	<div class="goods-item3">
 	            	<div class="goods-like">${vo.likeCount }</div>
-	            	<div class="goods-name">${vo.GName }</div>
-	            	<div class="goods-price">${vo.GPrice }</div>
+	            	<div class="goods-name">${vo.gname }</div>
+	            	<div class="goods-price">${vo.gprice }</div>
             	</div>
    			</c:forEach>
         </div>
@@ -204,8 +163,8 @@ text-align: right;
   			<c:forEach var="vo" items="${interestThreeNotLogin }">
          	   <div class="goods-item4">
 	            	<div class="goods-like">${vo.likeCount }</div>
-	            	<div class="goods-name">${vo.GName }</div>
-	            	<div class="goods-price">${vo.GPrice }</div>
+	            	<div class="goods-name">${vo.gname }</div>
+	            	<div class="goods-price">${vo.gprice }</div>
             	</div>
   			</c:forEach>
         </div>
@@ -214,6 +173,6 @@ text-align: right;
     <jsp:include page="layout/popUpFooter.jsp" />
     <jsp:include page="layout/goodsNavBar.jsp" />
 </body>
-<script>
-</script>
+<script type="text/javascript" src="/resources/goodsJs/goodsHeader.js"></script>
+<script type="text/javascript" src="/resources/goodsJs/goodsMain.js"></script>
 </html>

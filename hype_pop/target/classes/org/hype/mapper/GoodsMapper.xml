@@ -59,4 +59,18 @@
 	<select id="getOneByGno" resultType="org.hype.domain.goodsVO">
 		select * from goods_info_tbl where gNo = #{gNo}
 	</select>
+	<select id="getSearchList" parameterType="map" resultType="org.hype.domain.goodsVO">
+		<![CDATA[
+    SELECT * FROM (
+        SELECT g.*, ROWNUM AS rn
+        FROM goods_info_tbl g
+        WHERE g.gName LIKE '%' || #{searchText} || '%'
+        AND ROWNUM <= #{offset} + #{limit}
+    ) 
+    WHERE rn > #{offset}
+    	]]>
+	</select>
+	<select id="getCategory" resultType="org.hype.domain.gCatVO">
+		select * from goods_cat_tbl where gno = #{gno}
+	</select>
 </mapper>

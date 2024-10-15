@@ -13,9 +13,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class goodsVO {
-	private int gNo, psNo, gPrice, gHit, likeCount, replyCount;
-	private String gName, gExp;
+	private int gno, psno, gprice, ghit, likeCount, replyCount;
+	private String gname, gexp;
 	private Date sellDate;
 	private List<gImgVO> attachList;
-	private gCatVO gCat;
+	private gCatVO gcat;
 }
