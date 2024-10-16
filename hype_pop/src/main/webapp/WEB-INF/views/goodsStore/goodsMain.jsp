@@ -38,37 +38,41 @@ h1, h2 {
     position: relative;
 }
 
-.goods-container1, .goods-container2, .goods-container3, .goods-container4 {
+/* 컨테이너를 슬라이더 크기 100%로 설정 */
+.goodsContainer1, .goodsContainer2, .goodsContainer3, .goodsContainer4 {
     display: flex;
     overflow: hidden;
-    width: 80%;
+    width: 100%;
     height: 300px;
     border-radius: 10px;
     position: relative;
+    box-sizing: border-box;
 }
 
-.goods-item1, .goods-item2, .goods-item3, .goods-item4 {
+/* 한 줄에 4개의 상품이 꽉 차게 보이도록 설정 */
+.goodsItem1, .goodsItem2, .goodsItem3, .goodsItem4 {
     background-color: #333;
     color: white;
-    min-width: 200px;
+    width: 25%; /* 4개의 상품이 한 줄에 꽉 차게 */
     height: 100%;
     margin: 0 10px;
     border-radius: 10px;
     padding: 10px;
+    box-sizing: border-box;
     transition: transform 0.3s ease;
 }
 
-.goods-item1:hover, .goods-item2:hover, .goods-item3:hover, .goods-item4:hover {
-    transform: scale(1.1);
+.goodsItem1:hover, .goodsItem2:hover, .goodsItem3:hover, .goodsItem4:hover {
+    transform: scale(1.01);
 }
 
 /* 가격, 좋아요, 이름 등 */
-.goods-like {
+.goodsLike {
     text-align: right;
     color: #fff;
 }
 
-.goods-name {
+.goodsName {
     background-color: #e50914;
     color: white;
     padding: 10px;
@@ -79,7 +83,7 @@ h1, h2 {
     text-overflow: ellipsis;
 }
 
-.goods-price {
+.goodsPrice {
     text-align: right;
     color: #f5c518;
     font-weight: bold;
@@ -115,56 +119,59 @@ h1, h2 {
     <h1>현재 인기있는 굿즈</h1>
     <div id="hotGoods">
         <button id="prevBtn1">◀</button>
-        <div class="goods-container1" id="goodsContainer1">
-			<c:forEach var="vo" items="${likeGoods }">
-            <div class="goods-item1">
-            	<input type="hidden" value="${vo.gno }">
-            	<div class="goods-like">${vo.likeCount }</div>
-            	<div class="goods-name">${vo.gname }</div>
-            	<div class="goods-price">${vo.gprice }</div>
+        <div class="goodsContainer1" id="goodsContainer1">
+			<c:forEach var="vo" items="${likeGoods}">
+            <div class="goodsItem1">
+            	<input type="hidden" value="${vo.gno}">
+            	<div class="goodsLike">${vo.likeCount}</div>
+            	<div class="goodsName">${vo.gname}</div>
+            	<div class="goodsPrice">${vo.gprice}</div>
            	</div>
 			</c:forEach>
         </div>
         <button id="nextBtn1">▶</button>
     </div>
     <h1>관심사별 인기 목록</h1>
-    <h2>????</h2>
+    <h2>${categoryOne}</h2>
     <div id="interestGoods1">
         <button id="prevBtn2">◀</button>
-        <div class="goods-container2" id="goodsContainer2">
-  			<c:forEach var="vo" items="${interestOneNotLogin }">
-         	   <div class="goods-item2">
-	            	<div class="goods-like">${vo.likeCount }</div>
-	            	<div class="goods-name">${vo.gname }</div>
-	            	<div class="goods-price">${vo.gprice }</div>
+        <div class="goodsContainer2" id="goodsContainer2">
+  			<c:forEach var="vo" items="${interestOneNotLogin}">
+         	   <div class="goodsItem2">
+         	   		<input type="hidden" value="${vo.gno}">
+	            	<div class="goodsLike">${vo.likeCount}</div>
+	            	<div class="goodsName">${vo.gname}</div>
+	            	<div class="goodsPrice">${vo.gprice}</div>
             	</div>
 			</c:forEach>
         </div>
         <button id="nextBtn2">▶</button>
     </div>
-        <h2>????</h2>
+        <h2>${categoryTwo}</h2>
     <div id="interestGoods2">
         <button id="prevBtn3">◀</button>
-        <div class="goods-container3" id="goodsContainer3">
-  			<c:forEach var="vo" items="${interestTwoNotLogin }">
-            	<div class="goods-item3">
-	            	<div class="goods-like">${vo.likeCount }</div>
-	            	<div class="goods-name">${vo.gname }</div>
-	            	<div class="goods-price">${vo.gprice }</div>
+        <div class="goodsContainer3" id="goodsContainer3">
+  			<c:forEach var="vo" items="${interestTwoNotLogin}">
+            	<div class="goodsItem3">
+            		<input type="hidden" value="${vo.gno}">
+	            	<div class="goodsLike">${vo.likeCount}</div>
+	            	<div class="goodsName">${vo.gname}</div>
+	            	<div class="goodsPrice">${vo.gprice}</div>
             	</div>
    			</c:forEach>
         </div>
         <button id="nextBtn3">▶</button>
     </div>
-        <h2>????</h2>
+        <h2>${categoryThree}</h2>
     <div id="interestGoods3">
         <button id="prevBtn4">◀</button>
-        <div class="goods-container4" id="goodsContainer4">
-  			<c:forEach var="vo" items="${interestThreeNotLogin }">
-         	   <div class="goods-item4">
-	            	<div class="goods-like">${vo.likeCount }</div>
-	            	<div class="goods-name">${vo.gname }</div>
-	            	<div class="goods-price">${vo.gprice }</div>
+        <div class="goodsContainer4" id="goodsContainer4">
+  			<c:forEach var="vo" items="${interestThreeNotLogin}">
+         	   <div class="goodsItem4">
+         	   		<input type="hidden" value="${vo.gno}">
+	            	<div class="goodsLike">${vo.likeCount}</div>
+	            	<div class="goodsName">${vo.gname}</div>
+	            	<div class="goodsPrice">${vo.gprice}</div>
             	</div>
   			</c:forEach>
         </div>

@@ -73,4 +73,25 @@
 	<select id="getCategory" resultType="org.hype.domain.gCatVO">
 		select * from goods_cat_tbl where gno = #{gno}
 	</select>
+	<update id="getUpdatehit" parameterType="org.hype.domain.goodsVO">
+		update goods_info_tbl set ghit = #{ghit} wher gno = #{gno}
+	</update>
+	<select id="getLike" parameterType="int" resultType="int">
+		select count(*) from goods_like_list_table where userNo = #{userNo} and gno = #{gno}
+	</select>
+	<insert id="insertLike">
+		insert into goods_like_list_table values(#{userNo}, #{gno}, sysdate)
+	</insert>
+	<delete id="deleteLike">
+		delete from goods_like_list_table where userNo = #{userNo} and gno = #{gno}
+	</delete>
+	<update id="updateLikeCountPlus">
+		update goods_info_tbl set likeCount = likeCount +1 where gno = #{gno}
+	</update>
+	<update id="updatetLikeCountMinus">
+		update goods_info_tbl set likeCount = likeCount -1 where gno = #{gno}
+	</update>
+	<select id="getLikeCount" resultType="int">
+		select likeCount from goods_info_tbl where gno = #{gno} 
+	</select>
 </mapper>

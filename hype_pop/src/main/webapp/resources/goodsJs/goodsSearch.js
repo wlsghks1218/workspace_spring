@@ -82,13 +82,16 @@ function loadMoreGoods() {
             goodsElement.classList.add("goodsResult");
 
             goodsElement.innerHTML = `
-                <input type="hidden" value="${vo.gno}">
-                <div class="goodsLike">좋아요: ${vo.likeCount}</div>
-                <div class="goodsName">상품명: ${vo.gname}</div>
-                <div class="goodsPrice">가격: ${vo.gprice} 원</div>
-                <div class="goodsExp">설명: ${vo.gexp}</div>
-                <div class="goodsSellDate">판매종료일: ${displayTime(vo.sellDate)}</div>
-                <div class="goodsCategory">굿즈 관심사: ${getGoodsCategory(vo.gcat)}</div>
+                <div class="goodsImg">굿즈 이미지</div>
+                <div class="goodsInfo">
+                    <input type="hidden" value="${vo.gno}">
+                    <div class="goodsLike">좋아요: ${vo.likeCount}</div>
+                    <div class="goodsName">상품명: ${vo.gname}</div>
+                    <div class="goodsPrice">가격: ${vo.gprice} 원</div>
+                    <div class="goodsExp">설명: ${vo.gexp}</div>
+                    <div class="goodsSellDate">판매종료일: ${displayTime(vo.sellDate)}</div>
+                    <div class="goodsCategory">굿즈 관심사: ${getGoodsCategory(vo.gcat)}</div>
+                </div>
             `;
 
             goodsContainer.appendChild(goodsElement);
@@ -212,5 +215,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     document.querySelector("#loadMoreBtn").addEventListener('click', (event) => {
         loadMoreGoods();
+    });
+});
+
+
+document.querySelectorAll('.goodsResult').forEach(item => {
+    item.addEventListener('click', () => {
+        const gno = item.querySelector('input[type="hidden"]').value; // 숨겨진 input 요소 선택
+        location.href = `/goodsStore/goodsDetails?gno=${gno}`;
     });
 });

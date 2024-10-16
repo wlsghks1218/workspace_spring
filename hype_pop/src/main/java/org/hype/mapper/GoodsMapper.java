@@ -17,4 +17,11 @@ public interface GoodsMapper {
 	public goodsVO getOneByGno(int gno);
 	public List<goodsVO> getSearchList(@Param("searchText") String searchText, @Param("offset") int offset, @Param("limit") int limit);
 	public gCatVO getCategory(int gno);
+	public int getUpdatehit(goodsVO vo);
+	public int getLike(@Param("userNo") int userNo,@Param("gno") int gno);
+	public int insertLike(@Param("userNo") int userNo,@Param("gno") int gno);
+	public int deleteLike(@Param("userNo") int userNo,@Param("gno") int gno);
+	public int updateLikeCountPlus(@Param("gno") int gno);
+	public int updatetLikeCountMinus(@Param("gno") int gno);
+	public int getLikeCount(@Param("gno") int gno);
 }

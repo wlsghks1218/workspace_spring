@@ -15,10 +15,6 @@ document.querySelector("#hamburgerBTN").addEventListener('click', (event) => {
     }
 });
 
-// 상품 클릭 이벤트
-document.querySelectorAll('.goods-item1').forEach(item => {
-    item.addEventListener('click', () => {
-        const gno = item.querySelector('input[type="hidden"]').value; // 숨겨진 input 요소 선택
-        location.href = `/goodsStore/goodsDetails?gno=${gno}`;
-    });
-});
+document.querySelector('#goodsMainLogo').addEventListener('click', ()=>{
+	location.href = '/goodsStore/goodsMain'
+})

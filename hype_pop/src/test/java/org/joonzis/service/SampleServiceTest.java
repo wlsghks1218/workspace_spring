@@ -2,6 +2,7 @@ package org.joonzis.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hype.domain.GReplyVO;
 import org.hype.domain.gCatVO;
@@ -28,52 +29,23 @@ public class SampleServiceTest {
 	
 	@Test
 	public void test() throws Exception{
-    	gCatVO vo = gService.getCategory(10);
-        List<String> categoryList = new ArrayList<>();
-        if (vo.getHealthBeauty() == 1) {
-            categoryList.add("healthBeauty");
-        }
-        if (vo.getGame() == 1) {
-            categoryList.add("game");
-        }
-        if (vo.getCulture() == 1) {
-            categoryList.add("culture");
-        }
-        if (vo.getShopping() == 1) {
-            categoryList.add("shopping");
-        }
-        if (vo.getSupply() == 1) {
-            categoryList.add("supply");
-        }
-        if (vo.getKids() == 1) {
-            categoryList.add("kids");
-        }
-        if (vo.getDesign() == 1) {
-            categoryList.add("design");
-        }
-        if (vo.getFoods() == 1) {
-            categoryList.add("foods");
-        }
-        if (vo.getInterior() == 1) {
-            categoryList.add("interior");
-        }
-        if (vo.getPolicy() == 1) {
-            categoryList.add("policy");
-        }
-        if (vo.getCharacter() == 1) {
-            categoryList.add("character");
-        }
-        if (vo.getExperience() == 1) {
-            categoryList.add("experience");
-        }
-        if (vo.getCollaboration() == 1) {
-            categoryList.add("collaboration");
-        }
-        if (vo.getEntertainment() == 1) {
-            categoryList.add("entertainment");
-        }
-        categoryList.forEach(category -> {
-            System.out.println("Selected category: " + category);
-        });
+        Map<String, Object> result1 = gService.getListByInterestOneNotLogin();
+        String category1 = (String) result1.get("category");
+        List<goodsVO> interestOneNotLogin = (List<goodsVO>) result1.get("goodsList");
+        
+        Map<String, Object> result2 = gService.getListByInterestTwoNotLogin();
+        String category2 = (String) result2.get("category");
+        List<goodsVO> interestTwoNotLogin = (List<goodsVO>) result2.get("goodsList");
+        
+        Map<String, Object> result3 = gService.getListByInterestThreeNotLogin();
+        String category3 = (String) result3.get("category");
+        List<goodsVO> interestThreeNotLogin = (List<goodsVO>) result3.get("goodsList");
+        
+        log.info("cat : " + category1);
+        log.info("cat : " + category2);
+        log.info("cat : " + category3);
+        log.info("관심사1 vo " + interestOneNotLogin);
+        log.info("관심사2 vo " + interestTwoNotLogin);
+        log.info("관심사3 vo " + interestThreeNotLogin);
 	}
 }

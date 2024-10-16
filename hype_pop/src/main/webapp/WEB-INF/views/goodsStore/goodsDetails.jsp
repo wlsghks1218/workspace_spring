@@ -146,68 +146,66 @@ h1, h2, p, span {
 }
 
 #userReviews {
-    width: 80%;
-    margin: 0 auto 30px auto; /* 중앙 정렬 */
-    padding: 20px;
-    background-color: #222;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	width: 80%;
+	margin: 0 auto 30px auto; /* 중앙 정렬 */
+	padding: 20px;
+	background-color: #222;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* 후기 제목 스타일 */
 #userReviews h2 {
-    color: #fff;
-    font-size: 28px; /* 크기를 살짝 키움 */
-    font-weight: 600; /* 글자 두께를 조금 더 두껍게 */
-    margin-bottom: 20px; /* 제목과 댓글 목록 사이 간격 */
-    text-align: left; /* 제목을 왼쪽 정렬 */
-    padding-bottom: 10px;
-    border-bottom: 2px solid #e50914; /* 아래에 구분선 추가 */
+	color: #fff;
+	font-size: 28px; /* 크기를 살짝 키움 */
+	font-weight: 600; /* 글자 두께를 조금 더 두껍게 */
+	margin-bottom: 20px; /* 제목과 댓글 목록 사이 간격 */
+	text-align: left; /* 제목을 왼쪽 정렬 */
+	padding-bottom: 10px;
+	border-bottom: 2px solid #e50914; /* 아래에 구분선 추가 */
 }
 
 /* 댓글 목록 */
 .myChat {
-    list-style-type: none;
-    padding: 0;
-    color: #fff;
+	list-style-type: none;
+	padding: 0;
+	color: #fff;
 }
 
 .myChat li {
-    background-color: #333;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	background-color: #333;
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* 유저 리뷰 스타일 */
 #userReviews ul {
-    list-style-type: none;
-    padding: 0;
+	list-style-type: none;
+	padding: 0;
 }
 
 #userReviews ul li {
-    background-color: #333;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    color: #fff;
-    width: 80%; /* 댓글 영역의 너비를 80%로 설정 */
-    margin: 0 auto 10px; /* 가운데 정렬 */
-    position: relative; /* 케밥 메뉴 위치를 위한 설정 */
+	background-color: #333;
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	color: #fff;
+	width: 80%; /* 댓글 영역의 너비를 80%로 설정 */
+	margin: 0 auto 10px; /* 가운데 정렬 */
+	position: relative; /* 케밥 메뉴 위치를 위한 설정 */
 }
-
 
 .reviewItem {
 	margin-bottom: 20px;
 }
 
 .review-content {
-    width: 80%;
-    display: inline-block; /* 댓글 내용을 차지하는 영역 */
+	width: 80%;
+	display: inline-block; /* 댓글 내용을 차지하는 영역 */
 }
-
 
 /* 평균 별점 영역 */
 .avgStarRating {
@@ -220,101 +218,104 @@ h1, h2, p, span {
 
 /* 케밥 메뉴 */
 .kebab-menu {
-    position: absolute;
-    top: 15px;
-    right: 10px; /* 우측에서 10px 떨어지게 */
-    cursor: pointer;
+	position: absolute;
+	top: 15px;
+	right: 10px; /* 우측에서 10px 떨어지게 */
+	cursor: pointer;
 }
 
 .menu-options {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 30px;
-    background: white;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 8px;
-    z-index: 1000;
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 30px;
+	background: white;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+	padding: 10px;
+	border-radius: 8px;
+	z-index: 1000;
 }
 
 .menu-options button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    background-color: #e50914;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
+	display: block;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 5px;
+	cursor: pointer;
+	background-color: #e50914;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	text-align: center;
+}
+
+#chkLike {
+	background-color: white;
 }
 
 .menu-options button:hover {
-    background-color: #c3070a;
+	background-color: #c3070a;
 }
 
 .menu-options .delete-btn {
-    background-color: #f44336;
+	background-color: #f44336;
 }
+
 #reviewForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 가로 축 중앙 정렬 */
-    justify-content: center; /* 세로 축 중앙 정렬 */
-    width: 80%; /* 폼 너비 설정 */
-    margin: 30px auto; /* 가운데 정렬을 위해 자동 마진 */
-    background-color: #222;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* 가로 축 중앙 정렬 */
+	justify-content: center; /* 세로 축 중앙 정렬 */
+	width: 80%; /* 폼 너비 설정 */
+	margin: 30px auto; /* 가운데 정렬을 위해 자동 마진 */
+	background-color: #222;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 #reviewText {
-    width: 100%;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 15px;
-    font-size: 16px;
+	width: 100%;
+	background-color: #333;
+	color: #fff;
+	border: 1px solid #444;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 15px;
+	font-size: 16px;
 }
 
 #addGReply {
-    background-color: #e50914;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+	background-color: #e50914;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: background-color 0.3s;
 }
 
 #addGReply:hover {
-    background-color: #c3070a;
+	background-color: #c3070a;
 }
 
 .StarRating {
-    display: flex;
-    justify-content: center; /* 별점도 중앙 정렬 */
-    margin-bottom: 10px;
+	display: flex;
+	justify-content: center; /* 별점도 중앙 정렬 */
+	margin-bottom: 10px;
 }
 
 .StarRating span {
-    font-size: 30px;
-    cursor: pointer;
-    color: gold;
+	font-size: 30px;
+	cursor: pointer;
+	color: gold;
 }
 
 #selectedRating {
-    margin-bottom: 15px;
-    text-align: center;
+	margin-bottom: 15px;
+	text-align: center;
 }
-
-
 </style>
 </head>
 <body>
@@ -322,33 +323,30 @@ h1, h2, p, span {
 	<div class="goodsDetails">
 		<div id="goodsBanner">굿즈 배너 이미지</div>
 		<div id="goodsInfo">
-			<span id="goodsLike">좋아요: ${goods.likeCount }회</span> <span
-				id="goodsName">상품명: ${goods.gname }</span> <span id="goodsPrice">가격:
-				${goods.gprice }</span> <span id="goodsDes"> ${goods.gexp } </span> <span
-				id="endDate">판매 종료일: ${goods.sellDate }</span>
+			<span id="goodsLike">좋아요: ${goods.likeCount }회</span>
+			<span id="goodsName">상품명: ${goods.gname }</span>
+			<span id="goodsPrice">가격: ${goods.gprice }</span>
+			<span id="goodsDes"> ${goods.gexp } </span>
+			<span id="endDate">판매 종료일: ${goods.sellDate }</span>
 			<!-- 수량 조정 바 -->
 			<div class="quantityBar">
 				<button id="decreaseBtn">-</button>
 				<input type="text" id="quantity" value="1" readonly />
 				<button id="increaseBtn">+</button>
 			</div>
-			<!-- 총 가격 -->
 			<div class="totalPrice">
 				총 가격: <span id="totalPrice"></span>
 			</div>
-			<!-- 장바구니, 바로 결제 버튼 -->
 			<div class="actionButtons">
 				<button id="addToCart">장바구니 담기</button>
 				<button id="directPurchase" class="directPurchase">바로 결제</button>
+				<button id="chkLike"><img id="likeIcon" src="/resources/images/emptyHeart.png" alt="Like" width="24"></button>
 			</div>
 		</div>
 	</div>
 	<div class="goodsDetailImg">
 		<h1>굿즈 상세 이미지</h1>
-		<!-- 여기에 굿즈 상세 이미지가 들어갑니다 -->
 	</div>
-
-	<!-- 리뷰 작성 폼 -->
 	<form id="reviewForm" method="post">
 		<div class="StarRating" id="newReviewStars">
 			<span data-value="1">★</span>
@@ -358,15 +356,13 @@ h1, h2, p, span {
 			<span data-value="5">★</span>
 		</div>
 		<p id="selectedRating">선택한 별점: 0</p>
-		<textarea id="reviewText" name="reviewText"
-			placeholder="후기를 작성해주세요..." rows="5" cols="50"></textarea>
-		<input type="hidden" id="rating" name="rating" value="0"> <input
-			type="button" id="addGReply" value="등록하기">
+		<textarea id="reviewText" name="reviewText" placeholder="후기를 작성해주세요..." rows="5" cols="50"></textarea>
+		<input type="hidden" id="rating" name="rating" value="0">
+		<input type="button" id="addGReply" value="등록하기">
 	</form>
 	<div class="avgStarRating" id="avgReviewStars">
-		<span>평균 별점</span><span class="avgScore"></span> <span data-value="1">★</span>
-		<span data-value="2">★</span> <span data-value="3">★</span> <span
-			data-value="4">★</span> <span data-value="5">★</span>
+		<span>평균 별점:</span>
+		<div id="avgStarsContainer"></div>
 	</div>
 	<div id="userReviews">
 		<h2>후기들</h2>
