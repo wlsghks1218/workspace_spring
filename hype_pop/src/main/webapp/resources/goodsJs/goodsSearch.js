@@ -1,3 +1,5 @@
+let currentSortType = null;
+
 document.querySelectorAll('#popUpName').forEach(option => {
     option.addEventListener('click', (event) => {
         event.preventDefault();
@@ -11,14 +13,16 @@ document.querySelectorAll('#popUpName').forEach(option => {
 });
 
 let currentPage = 1; // 현재 페이지 번호
-
+cutExp();
+// 페이지 로드 시 이벤트 리스너 설정
 document.addEventListener('DOMContentLoaded', (event) => {
+    setSortEventListeners();
     document.querySelector("#loadMoreBtn").addEventListener('click', (event) => {
         loadMoreGoods();
     });
 });
 
-//굿즈 관심사를 문자열로 반환하는 함수
+// 굿즈 관심사를 문자열로 반환하는 함수
 function getGoodsCategory(gcat) {
     // gcat이 null 또는 undefined인 경우 빈 문자열 반환
     if (!gcat) {
@@ -44,14 +48,8 @@ function getGoodsCategory(gcat) {
     return categories.join(", ");
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    document.querySelector("#loadMoreBtn").addEventListener('click', (event) => {
-        loadMoreGoods();
-    });
-});
-
 function loadMoreGoods() {
-    currentPage++; // 다음 페이지를 요청
+    currentPage++;
     console.log(`Current page: ${currentPage}`);
 
     fetch('/goodsStore/loadMoreGoods', {
@@ -80,7 +78,7 @@ function loadMoreGoods() {
         data.forEach(vo => {
             const goodsElement = document.createElement("div");
             goodsElement.classList.add("goodsResult");
-
+            console.log(vo.gcat);
             goodsElement.innerHTML = `
                 <div class="goodsImg">굿즈 이미지</div>
                 <div class="goodsInfo">
@@ -96,6 +94,7 @@ function loadMoreGoods() {
 
             goodsContainer.appendChild(goodsElement);
         });
+        cutExp();
 
         // 모든 데이터를 불러왔을 경우 더보기 버튼을 숨김
         if (data.length === 0 || data.length < 10) {
@@ -103,7 +102,7 @@ function loadMoreGoods() {
         }
 
         // 기존에 선택된 정렬 기준에 따라 다시 정렬
-        if (currentSortType) {
+        if (currentSortType != null) {
             sortGoods(currentSortType); // 현재 선택된 정렬 기준으로 다시 정렬
         }
 
@@ -209,19 +208,34 @@ function setSortEventListeners() {
     });
 }
 
-// 페이지 로드 시 이벤트 리스너 설정
-document.addEventListener('DOMContentLoaded', (event) => {
-    setSortEventListeners();
-
-    document.querySelector("#loadMoreBtn").addEventListener('click', (event) => {
-        loadMoreGoods();
-    });
-});
-
-
 document.querySelectorAll('.goodsResult').forEach(item => {
     item.addEventListener('click', () => {
-        const gno = item.querySelector('input[type="hidden"]').value; // 숨겨진 input 요소 선택
+        const gno = item.querySelector('input[type="hidden"]').value; // 숨겨진
+																		// input
+																		// 요소 선택
         location.href = `/goodsStore/goodsDetails?gno=${gno}`;
     });
 });
+function cutExp(){
+	const goodsExp = document.querySelectorAll('.goodsExp');
+	const maxLength1 = 40;
+	goodsExp.forEach((element) => {
+	    let displayName = element.textContent;
+	    if (displayName.length > maxLength1) {
+	        displayName = displayName.substring(0, maxLength1) + "...";
+	    }
+	    element.textContent = displayName;
+	});
+	
+	const goodsNames = document.querySelectorAll('.goodsName');
+	const maxLength2 = 20;
+	goodsNames.forEach((element) =>{
+		let displayName = element.textContent;
+		if (displayName.length > maxLength2){
+		displayName = displayName.substring(0, maxLength2) + "...";
+		}
+		element.textContent = displayName;
+	})
+}
+
+

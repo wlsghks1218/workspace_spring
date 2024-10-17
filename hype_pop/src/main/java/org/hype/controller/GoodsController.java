@@ -112,6 +112,7 @@ public class GoodsController {
         // 각 상품에 카테고리 정보 추가
         for (goodsVO vo : voList) {
             gCatVO voCat = gService.getCategory(vo.getGno());
+            log.info("검색 시 cat 은 : " + voCat);
             vo.setGcat(voCat);
         }
 

@@ -21,4 +21,5 @@ public interface GoodsService {
 	public int updateLike(int userNo, int gno);
 	public int getLikeCount(int gno);
 	public int getLikeChk(int userNo, int gno);
+	
 }

@@ -136,12 +136,12 @@ h1, h2, p, span {
 }
 
 /* 별점 스타일 */
-.StarRating span {
+.starRating span {
 	font-size: 30px;
 	cursor: pointer;
 }
 
-.StarRating span:hover, .StarRating span.active {
+.starRating span:hover, .starRating span.active {
 	color: gold;
 }
 
@@ -202,7 +202,7 @@ h1, h2, p, span {
 	margin-bottom: 20px;
 }
 
-.review-content {
+.reviewContent {
 	width: 80%;
 	display: inline-block; /* 댓글 내용을 차지하는 영역 */
 }
@@ -217,15 +217,15 @@ h1, h2, p, span {
 }
 
 /* 케밥 메뉴 */
-.kebab-menu {
+.kebabMenu {
 	position: absolute;
 	top: 15px;
 	right: 10px; /* 우측에서 10px 떨어지게 */
 	cursor: pointer;
 }
 
-.menu-options {
-	display: none;
+.menuOptions {
+	visibility: hidden;
 	position: absolute;
 	right: 0;
 	top: 30px;
@@ -236,7 +236,7 @@ h1, h2, p, span {
 	z-index: 1000;
 }
 
-.menu-options button {
+.menuOptions button {
 	display: block;
 	width: 100%;
 	padding: 10px;
@@ -253,11 +253,11 @@ h1, h2, p, span {
 	background-color: white;
 }
 
-.menu-options button:hover {
+.menuOptions button:hover {
 	background-color: #c3070a;
 }
 
-.menu-options .delete-btn {
+.menuOptions .deleteBtn {
 	background-color: #f44336;
 }
 
@@ -285,7 +285,7 @@ h1, h2, p, span {
 	font-size: 16px;
 }
 
-#addGReply {
+#addReply {
 	background-color: #e50914;
 	color: #fff;
 	border: none;
@@ -296,17 +296,17 @@ h1, h2, p, span {
 	transition: background-color 0.3s;
 }
 
-#addGReply:hover {
+#addReply:hover {
 	background-color: #c3070a;
 }
 
-.StarRating {
+.starRating {
 	display: flex;
 	justify-content: center; /* 별점도 중앙 정렬 */
 	margin-bottom: 10px;
 }
 
-.StarRating span {
+.starRating span {
 	font-size: 30px;
 	cursor: pointer;
 	color: gold;
@@ -315,6 +315,70 @@ h1, h2, p, span {
 #selectedRating {
 	margin-bottom: 15px;
 	text-align: center;
+}
+.editCommentInput {
+    width: 100%;  /* 입력 필드 너비를 100%로 설정 */
+    padding: 10px;  /* 적절한 패딩 추가 */
+    margin-bottom: 10px;  /* 하단 간격 추가 */
+    font-size: 16px;  /* 글자 크기 */
+    border: 1px solid #444;  /* 테두리 색상 */
+    border-radius: 5px;  /* 모서리를 둥글게 */
+    background-color: #222;  /* 배경색 */
+    color: #fff;  /* 텍스트 색상 */
+}
+.styledButton {
+    padding: 10px 20px;  /* 버튼 패딩 */
+    font-size: 16px;  /* 글자 크기 */
+    cursor: pointer;  /* 마우스 포인터 변경 */
+    border: none;  /* 테두리 없음 */
+    border-radius: 5px;  /* 둥근 모서리 */
+    margin-right: 10px;  /* 버튼 간의 간격 */
+    transition: background-color 0.3s;  /* 배경색 전환 애니메이션 */
+}
+
+/* 수정 완료 버튼 */
+.saveEditBtn {
+    background-color: #e50914;  /* 넷플릭스 스타일 빨간색 */
+    color: white;  /* 글자 색상 흰색 */
+}
+
+.saveEditBtn:hover {
+    background-color: #c3070a;  /* 더 어두운 빨간색으로 변경 */
+}
+
+/* 수정 취소 버튼 */
+.cancelEditBtn {
+    background-color: #444;  /* 회색 배경 */
+    color: white;  /* 글자 색상 흰색 */
+}
+
+.cancelEditBtn:hover {
+    background-color: #888;  /* 더 밝은 회색으로 변경 */
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+.pagination button {
+    background-color: #e50914; /* 넷플릭스 빨간색 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.pagination button.active {
+    background-color: #c3070a; /* 현재 페이지는 더 어두운 빨간색 */
+    font-weight: bold;
+}
+
+.pagination button:hover {
+    background-color: #f44336; /* 버튼 호버 시 밝은 빨간색 */
 }
 </style>
 </head>
@@ -348,20 +412,20 @@ h1, h2, p, span {
 		<h1>굿즈 상세 이미지</h1>
 	</div>
 	<form id="reviewForm" method="post">
-		<div class="StarRating" id="newReviewStars">
-			<span data-value="1">★</span>
-			<span data-value="2">★</span>
-			<span data-value="3">★</span>
-			<span data-value="4">★</span>
-			<span data-value="5">★</span>
+		<div class="starRating" id="newReviewStars">
+			<span dataValue="1">★</span>
+			<span dataValue="2">★</span>
+			<span dataValue="3">★</span>
+			<span dataValue="4">★</span>
+			<span dataValue="5">★</span>
 		</div>
 		<p id="selectedRating">선택한 별점: 0</p>
 		<textarea id="reviewText" name="reviewText" placeholder="후기를 작성해주세요..." rows="5" cols="50"></textarea>
 		<input type="hidden" id="rating" name="rating" value="0">
-		<input type="button" id="addGReply" value="등록하기">
+		<input type="button" id="addReply" value="등록하기">
 	</form>
 	<div class="avgStarRating" id="avgReviewStars">
-		<span>평균 별점:</span>
+		<span class="avgStarString">평균 별점:</span>
 		<div id="avgStarsContainer"></div>
 	</div>
 	<div id="userReviews">
@@ -369,7 +433,11 @@ h1, h2, p, span {
 		<ul class="myChat">
 			<!-- 댓글 목록이 여기에 추가됩니다 -->
 		</ul>
+		<ul class="allChat">
+		
+		</ul>
 	</div>
+	<div class="pagination"></div>
 	<jsp:include page="layout/popUpFooter.jsp" />
 	<jsp:include page="layout/goodsNavBar.jsp" />
 </body>

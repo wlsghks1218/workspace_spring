@@ -17,6 +17,7 @@ public class GReplyServiceImpl implements GReplyService {
 	
 	@Override
 	public int insertGReply(GReplyVO gVo) {
+		gMapper.updateReplyCntPlus(gVo.getGno());
 		return gMapper.insertGReply(gVo);
 	}
 	
@@ -33,12 +34,35 @@ public class GReplyServiceImpl implements GReplyService {
 	}
 	
 	@Override
-	public double getAvgStars() {
-		return gMapper.getAvgStars();
+	public double getAvgStars(int gno) {
+		return gMapper.getAvgStars(gno);
 	}
 	
 	@Override
 	public int chkReplied(int userNo) {
 		return gMapper.chkReplied(userNo);
 	}
+	
+	@Override
+	public int deleteReply(int gno, int userNo) {
+		gMapper.updateReplyCntMinus(gno);
+		return gMapper.deleteReply(gno, userNo);
+	}
+	
+	@Override
+	public int updateReply(GReplyVO vo) {
+		return gMapper.updateReply(vo);
+	}
+	
+	@Override
+    public List<GReplyVO> getAllReplyListWithPaging(@Param("gno") int gno, @Param("userNo") int userNo, @Param("offset") int offset, @Param("size") int size) {
+		log.warn("getAllReplyListWithPaging service 처리 중 ....................");
+        return gMapper.getAllReplyListWithPaging(gno, userNo, offset, size);
+    }
+	
+	@Override
+	public int getReplyCount(@Param("gno") int gno,@Param("userNo") int userNo) {
+	    return gMapper.getReplyCount(gno, userNo);  // 내 댓글 제외한 댓글 수 반환
+	}
+	
 }

@@ -45,11 +45,11 @@ setupSlider('goodsContainer4', 'goodsItem4', 'prevBtn4', 'nextBtn4', 4, 8);
 const goodsNames = document.querySelectorAll('.goodsName');
 const maxLength = 40;
 goodsNames.forEach((element) => {
-    let displayName = element.textContent; // 요소의 텍스트 가져오기
+    let displayName = element.textContent;
     if (displayName.length > maxLength) {
-        displayName = displayName.substring(0, maxLength) + "..."; // 잘라내고 ... 추가
+        displayName = displayName.substring(0, maxLength) + "...";
     }
-    element.textContent = displayName; // 수정된 텍스트로 업데이트
+    element.textContent = displayName;
 });
 
 // 굿즈 클릭하여 디테일 페이지로 이동

@@ -74,7 +74,7 @@
 		select * from goods_cat_tbl where gno = #{gno}
 	</select>
 	<update id="getUpdatehit" parameterType="org.hype.domain.goodsVO">
-		update goods_info_tbl set ghit = #{ghit} wher gno = #{gno}
+		update goods_info_tbl set ghit = #{ghit} where gno = #{gno}
 	</update>
 	<select id="getLike" parameterType="int" resultType="int">
 		select count(*) from goods_like_list_table where userNo = #{userNo} and gno = #{gno}

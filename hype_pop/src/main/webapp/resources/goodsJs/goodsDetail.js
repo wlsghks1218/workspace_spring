@@ -1,26 +1,45 @@
 const rs = replyService;
 
 document.addEventListener("DOMContentLoaded", function () {
+    // 댓글 목록 표시
+    let currentPage = 1;  // 현재 페이지
+    const pageSize = 5;   // 페이지당 댓글 수
+    
+    // 페이지 처음 로드 시 댓글 목록 표시
+    showReplyList(currentPage);
+    
+    
     const decreaseBtn = document.getElementById('decreaseBtn');
     const increaseBtn = document.getElementById('increaseBtn');
     const quantityInput = document.getElementById('quantity');
     const totalPriceDisplay = document.getElementById('totalPrice');
-    const goodsPrice = parseFloat(document.getElementById('goodsPrice').textContent.replace(/[^0-9]/g, '')); // 굿즈 가격
-
-    function displayAvgStars(avgScore) {
+    const goodsPrice = parseFloat(document.getElementById('goodsPrice').textContent.replace(/[^0-9]/g, '')); // 굿즈
+																												// 가격
+    displayAvgStars();
+    function displayAvgStars() {
         const avgStarsContainer = document.getElementById('avgStarsContainer');
+        const avgStarString = document.querySelector('.avgStarString');
+        const gno = new URLSearchParams(location.search).get('gno'); // gno
+																		// 가져오기
         let stars = '';
-        for (let i = 1; i <= 5; i++) {
-            if (i <= avgScore) {
-                stars += '<span style="color: gold;">★</span>'; // 금색 별
-            } else {
-                stars += '<span style="color: gray;">★</span>'; // 회색 별
+
+        // 평균 별점을 서버에서 fetch로 가져옴
+        fetch('/gReply/avgStars/' + gno)
+        .then(response => response.json())
+        .then(result => {
+            const avgScore = parseFloat(result); // 서버에서 받은 avgScore 값 사용
+            for (let i = 1; i <= 5; i++) {
+                if (i <= avgScore) {
+                    stars += '<span style="color: gold;">★</span>'; // 금색 별
+                } else {
+                    stars += '<span style="color: gray;">★</span>'; // 회색 별
+                }
             }
-        }
-        avgStarsContainer.innerHTML = stars;
+            avgStarsContainer.innerHTML = stars; // 별점 표시
+            avgStarString.innerHTML = "평균 별점 : " + avgScore.toFixed(1);
+        })
+        .catch(err => console.error('Error:', err));
     }
-    const avgStarsString = parseFloat('${avgStarsString}'); // JSP에서 avgStarsString 값 가져오기
-    displayAvgStars(avgStarsString); // 평균 별점 표시
     
     // 수량 조절
     decreaseBtn.addEventListener('click', () => {
@@ -67,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         star.addEventListener('click', function () {
-            const rating = this.getAttribute('data-value');
+            const rating = this.getAttribute('dataValue');
             ratingInput.value = rating;
             selectedRating.textContent = '선택한 별점: ' + rating;
 
@@ -92,89 +111,127 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 댓글 등록 기능
-    document.getElementById('addGReply').addEventListener('click', function (event) {
+    document.getElementById('addReply').addEventListener('click', function (event) {
         event.preventDefault();
         const rating = document.getElementById('rating').value;
         const reviewText = document.getElementById('reviewText').value;
         const gno = new URLSearchParams(location.search).get('gno');
-        const userId = "유저ID입니다."; // 유저 ID 값 설정
+        const userId = "유저ID입니다.";
 
         rs.add({
             gno: gno,
-            userNo: 2,
+            userNo: 1,
             gcomment: reviewText,
             gscore: rating,
             userId: userId
         }, function (result) {
             if (result === "success") {
                 alert("댓글이 등록되었습니다.");
-                showMyList(); // 댓글 목록 새로고침
+                showReplyList(); // 댓글 목록 새로고침
             } else {
                 alert("댓글 등록 실패");
             }
         });
     });
 
-    // 댓글 목록 표시
-    function showMyList() {
-        const gno = new URLSearchParams(location.search).get('gno');
-        const userNo = 1;
-        let replyUL = document.querySelector(".myChat");
-        replyUL.innerHTML = "";
 
-        rs.getList(gno, userNo, function (data) {
+
+    // 댓글 목록을 보여주는 함수
+    function showReplyList(page) {
+    	const gno = new URLSearchParams(location.search).get('gno');
+        const userNo = 2;
+
+        rs.getList(gno, userNo, page, pageSize, function (data) {
+            const replyUlMine = document.querySelector(".myChat");
+            const replyUlall = document.querySelector(".allChat");
+            replyUlMine.innerHTML = "";
+            replyUlall.innerHTML = "";
+
             let msg = '';
-            const myReply = data.service2Result;
+            const myReply = data.myReply;
 
             if (myReply) {
-                msg += `<li data-rno=${myReply.greplyNo} class="my-comment">`;
-                msg += `<div class="chat-header">`;
+                msg += `<li dataRno=${myReply.greplyNo} class="myComment">`;
+                msg += `<div class="chatHeader">`;
                 msg += `<div class="userRating"></div>`;
-                msg += `<strong class="primary-font">내 댓글: ${myReply.userId}</strong>`;
-                msg += `<small class="pull-right">${displayTime(myReply.gupdateDate)}</small>`;
-                msg += `<div class="kebab-menu">⋮</div>`;
-                msg += `<div class="menu-options">`;
-                msg += `<button class="edit-btn">수정하기</button>`;
-                msg += `<button class="delete-btn">삭제하기</button>`;
+                msg += `<strong class="primaryFont">내 댓글: ${myReply.userId}</strong>`;
+                msg += `<small class="pullRight">${displayTime(myReply.gupdateDate)}</small>`;
+                msg += `<div class="kebabMenu">⋮</div>`;
+                msg += `<div class="menuOptions">`;
+                msg += `<button class="editBtn">수정하기</button>`;
+                msg += `<button class="deleteBtn">삭제하기</button>`;
                 msg += `</div></div>`;
                 msg += `<p>${myReply.gcomment}</p>`;
                 msg += `</li>`;
+                replyUlMine.innerHTML = msg;
             }
 
-            const allReplies = data.service1Result;
+            msg = '';
+            const allReplies = data.replyList;
             allReplies.forEach(vo => {
-                msg += `<li data-rno=${vo.greplyNo}>`;
-                msg += `<div class="chat-header">`;
+                msg += `<li dataRno=${vo.greplyNo}>`;
+                msg += `<div class="chatHeader">`;
                 msg += `<div class="userRating"></div>`;
-                msg += `<strong class="primary-font">${vo.userId}</strong>`;
-                msg += `<small class="pull-right">${displayTime(vo.gupdateDate)}</small>`;
+                msg += `<strong class="primaryFont">${vo.userId}</strong>`;
+                msg += `<small class="pullRight">${displayTime(vo.gupdateDate)}</small>`;
                 msg += `<p>${vo.gcomment}</p>`;
                 msg += `</li>`;
             });
 
-            replyUL.innerHTML = msg;
+            replyUlall.innerHTML = msg;
 
-            // 케밥 메뉴 기능 추가 (내 댓글에만 표시)
-            document.querySelectorAll('.my-comment .kebab-menu').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    const menu = this.nextElementSibling;
-                    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-                });
-            });
+            displayPagingButtons(data.totalReplies);
             
-            // 내 댓글과 모든 댓글의 별점 표시
+            // 페이지 버튼 생성
+            function displayPagingButtons(totalReplies) {
+                const totalPages = Math.ceil(totalReplies / pageSize);
+                const paginationDiv = document.querySelector(".pagination");
+
+                if (!paginationDiv) {
+                    console.error("paginationDiv 요소를 찾을 수 없습니다.");
+                    return; // paginationDiv가 없는 경우 함수를 종료하여 오류를 방지
+                }
+
+                paginationDiv.innerHTML = "";  // 기존 페이지 버튼 비우기
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement("button");
+                    pageBtn.textContent = i;
+                    pageBtn.classList.add("pageBtn");
+                    if (i === currentPage) {
+                        pageBtn.classList.add("active");
+                    }
+                    pageBtn.addEventListener("click", function () {
+                        currentPage = i;
+                        showReplyList(i);
+                    });
+                    paginationDiv.appendChild(pageBtn);
+                }
+            }
+
+
+            if(document.querySelector('.kebabMenu') != null){
+            document.querySelector('.kebabMenu').addEventListener('click', function () {
+                const menu = this.nextElementSibling;
+                if (menu.style.visibility === 'hidden' || menu.style.visibility === '') {
+                    menu.style.visibility = 'visible';
+                } else {
+                    menu.style.visibility = 'hidden';
+                }
+            });
+            }
             if (myReply) {
-                const myUserRatingContainer = replyUL.querySelector('.my-comment .userRating');
-                displayStars(myReply.gscore, myUserRatingContainer);  // gscore 값을 기반으로 별점 표시
+                const myUserRatingContainer1 = replyUlMine.querySelector('.myComment .userRating');
+                displayStars(myReply.gscore, myUserRatingContainer1);
             }
 
             allReplies.forEach(vo => {
-                const userRatingContainer = replyUL.querySelector(`li[data-rno="${vo.greplyNo}"] .userRating`);
-                displayStars(vo.gscore, userRatingContainer);  // gscore 값을 기반으로 별점 표시
+                const userRatingContainer = replyUlall.querySelector(`li[dataRno="${vo.greplyNo}"] .userRating`);
+                displayStars(vo.gscore, userRatingContainer);
             });
+            displayAvgStars();
         });
     }
-    showMyList();
 
     function displayTime(unixTimeStamp) {
         const myDate = new Date(unixTimeStamp);
@@ -183,7 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const d = String(myDate.getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
     }
-    
     
     function likeBtnChange() {
         const likeBtn = document.querySelector('#chkLike'); // 좋아요 버튼
@@ -203,7 +259,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     likeBtnChange();
     
-    
     document.querySelector("#chkLike").addEventListener('click', () => {
     	const likeBtn = document.querySelector('#chkLike');
         const gno = new URLSearchParams(location.search).get('gno');
@@ -221,4 +276,113 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => console.error('Error:', err));
     });
+    
+    document.addEventListener('click', (event) => {
+        if (event.target && event.target.classList.contains('deleteBtn')) {
+            const gno = new URLSearchParams(location.search).get('gno');
+            const userNo = 1;  // 현재 로그인한 사용자 번호
+
+            fetch('/gReply/deleteReply/' + gno + '/' + userNo,{
+            	method:'delete'
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result == 0) {
+                    alert("댓글 삭제 실패");
+                } else if (result == 1) {
+                    alert("댓글이 삭제되었습니다.");
+                    showReplyList(); // 댓글 목록을 새로고침
+                }
+            })
+            .catch(err => console.error('Error:', err));
+        }
+    });
+    
+    document.addEventListener('click', (event) => {
+        if (event.target && event.target.classList.contains('editBtn')) {
+            const commentLi = event.target.closest('li.myComment');  // 댓글 li 요소 찾기
+            const commentP = commentLi.querySelector('p');           // 기존 댓글 텍스트 요소
+            const userRatingDiv = commentLi.querySelector('.userRating');  // 별점 표시 요소
+
+            const originalComment = commentP.textContent;  // 기존 댓글 내용 저장
+            const originalRating = ratingInput.value;      // 기존 별점 저장
+
+            // 댓글 텍스트를 input 필드로 변경
+            const editInput = document.createElement('input');
+            editInput.type = 'text';
+            editInput.value = originalComment;
+            editInput.classList.add('editCommentInput');  // input에 클래스 추가
+            commentP.replaceWith(editInput);
+
+            // 별점 선택란으로 변경
+            const newRatingDiv = document.createElement('div');
+            newRatingDiv.classList.add('editRating');
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<span data-value="${i}" style="color: ${i <= originalRating ? 'gold' : 'gray'};">★</span>`;
+            }
+            newRatingDiv.innerHTML = stars;
+            userRatingDiv.replaceWith(newRatingDiv);
+
+            // 수정 완료 및 수정 취소 버튼 추가
+            const saveBtn = document.createElement('button');
+            saveBtn.textContent = '수정 완료';
+            saveBtn.classList.add('saveEditBtn', 'styledButton');  // CSS 클래스 추가
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = '수정 취소';
+            cancelBtn.classList.add('cancelEditBtn', 'styledButton');  // CSS 클래스 추가
+
+            commentLi.append(saveBtn, cancelBtn);
+
+            // 별점 선택 기능 추가
+            newRatingDiv.querySelectorAll('span').forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    const rating = index + 1;
+                    newRatingDiv.querySelectorAll('span').forEach((s, i) => {
+                        s.style.color = i < rating ? 'gold' : 'gray';
+                    });
+                    ratingInput.value = rating;
+                });
+            });
+
+            // 수정 취소 기능
+            cancelBtn.addEventListener('click', () => {
+                editInput.replaceWith(commentP);
+                newRatingDiv.replaceWith(userRatingDiv);
+                saveBtn.remove();
+                cancelBtn.remove();
+            });
+
+            // 수정 완료 기능
+            saveBtn.addEventListener('click', () => {
+                const newComment = editInput.value;
+                const newRating = ratingInput.value;
+
+                fetch('/gReply/updateReply/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        gno: new URLSearchParams(location.search).get('gno'),
+                        userNo: 2,
+                        gcomment: newComment,
+                        gscore: newRating,
+                    }),
+                })
+                    .then(response => response.text())
+                    .then(result => {
+                        if (result === "success") {
+                            alert("댓글이 수정되었습니다.");
+                            showReplyList();  // 댓글 목록 새로고침
+                        } else {
+                            alert("댓글 수정 실패");
+                        }
+                    })
+                    .catch(err => console.error('Error:', err));
+            });
+        }
+    });
+    
 });

@@ -29,23 +29,14 @@ public class SampleServiceTest {
 	
 	@Test
 	public void test() throws Exception{
-        Map<String, Object> result1 = gService.getListByInterestOneNotLogin();
-        String category1 = (String) result1.get("category");
-        List<goodsVO> interestOneNotLogin = (List<goodsVO>) result1.get("goodsList");
-        
-        Map<String, Object> result2 = gService.getListByInterestTwoNotLogin();
-        String category2 = (String) result2.get("category");
-        List<goodsVO> interestTwoNotLogin = (List<goodsVO>) result2.get("goodsList");
-        
-        Map<String, Object> result3 = gService.getListByInterestThreeNotLogin();
-        String category3 = (String) result3.get("category");
-        List<goodsVO> interestThreeNotLogin = (List<goodsVO>) result3.get("goodsList");
-        
-        log.info("cat : " + category1);
-        log.info("cat : " + category2);
-        log.info("cat : " + category3);
-        log.info("관심사1 vo " + interestOneNotLogin);
-        log.info("관심사2 vo " + interestTwoNotLogin);
-        log.info("관심사3 vo " + interestThreeNotLogin);
+		int gno = 29;
+		int userNo = 2;
+		int offset = 0;
+		int size = 5;
+		List<GReplyVO> replyList = gRService.getAllReplyListWithPaging(gno, userNo, offset, size);
+		
+		for(GReplyVO vo : replyList) {
+			log.info(vo.getGreplyNo());
+		}
 	}
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class goodsVO {
-	private int gno, psno, gprice, ghit, likeCount, replyCount;
+	private int gno, psno, gprice, ghit, likeCount, replycnt;
 	private String gname, gexp;
 	private Date sellDate;
 	private List<gImgVO> attachList;
